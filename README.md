@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/CUBigDataClass/WatchDogs_MongoWrapper.svg?token=kN4PmwFFW7UpnvGkMmzk&branch=master)](https://travis-ci.com/CUBigDataClass/WatchDogs_MongoWrapper)
+
 This is a mongo wrapper developed for the project
 
 # SSH Installation:
