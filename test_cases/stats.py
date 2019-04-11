@@ -1,4 +1,4 @@
-from mongo_wrapper import MongoWrapper
+from WatchDogs_MongoWrapper import MongoWrapper
 
 if __name__ == "__main__":
     mongo = MongoWrapper()

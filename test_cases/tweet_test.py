@@ -1,5 +1,5 @@
 import tweepy
-from mongo_wrapper import MongoWrapper
+from WatchDogs_MongoWrapper import MongoWrapper
 
 CONSUMER_KEY = '1pmAQV2KBiItz3OsGWIrAPQrv'
 CONSUMER_SECRET = 'oPIkrswP7eJh1gwaDiyOY8meYbcMTMhEsKnG5sdtethQSxSlMB'
