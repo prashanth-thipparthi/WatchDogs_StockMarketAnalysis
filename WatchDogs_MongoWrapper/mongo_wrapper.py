@@ -3,6 +3,7 @@ import pymongo
 import re
 from textblob import TextBlob
 import datetime
+import sys
 
 '''
 Stocks: A Collection which contains all the Stocks in NYSE.
@@ -102,7 +103,11 @@ class MongoWrapper:
                     # print('Tried to insert duplicates')
                     continue
                 else:
-                    print(e)
+                    exc_type, exc_obj, exc_tb = sys.exc_info()
+                    line = exc_tb.tb_lineno
+                    raise Exception('Exception is {excp}, line is {line}, some extra comments: {e_string}'.format(excp=exc_type,
+                                                                                                                  line=line,
+                                                                                                                  e_string = e))
                     # exit(1)
 
     def filter_docs(self, start: datetime=None, end: datetime=None) -> pymongo.cursor.Cursor:
