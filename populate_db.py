@@ -16,8 +16,6 @@ def twitter_setup():
         return api
     except:
         print("Error: Authentication Failed")
-
-
 if __name__ == "__main__":
     mng = MongoWrapper()
     while 1:
