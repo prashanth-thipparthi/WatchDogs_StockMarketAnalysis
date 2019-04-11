@@ -18,10 +18,12 @@ def twitter_setup():
         print("Error: Authentication Failed")
 if __name__ == "__main__":
     mng = MongoWrapper()
+    pullTweets = twitter_setup()  # Should this be in or out of the loop. An eternal confusion
     while 1:
-        pullTweets = twitter_setup() #Should this be in or out of the loop. An eternal confusion
+        stock_companies = []
         for stock in mng.get_all_stocks():
-            stock_name = stock['Company']
+            stock_companies.append(stock['Company'])
+        for stock_name in stock_companies:
             tweets = pullTweets.search(q=[stock_name], count=200, tweet_mode="extended")
             mng.insert_tweet_into_db(tweets, stock_name)
             time.sleep(20)
