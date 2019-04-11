@@ -12,7 +12,7 @@ def twitter_setup():
     try:
         auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
         auth.set_access_token(ACCESS_TOKEN, ACCESS_SECRET)
-        api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True, tweet_mode=extended)
+        api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
         return api
     except:
         print("Error: Authentication Failed")
@@ -24,5 +24,7 @@ if __name__ == "__main__":
         pullTweets = twitter_setup() #Should this be in or out of the loop. An eternal confusion
         for stock in mng.get_all_stocks():
             stock_name = stock['Company']
-            tweets = pullTweets.search(q=[stock_name], count=200)
+            tweets = pullTweets.search(q=[stock_name], count=200, tweet_mode="extended")
             mng.insert_tweet_into_db(tweets, stock_name)
+            time.delay(20)
+            
