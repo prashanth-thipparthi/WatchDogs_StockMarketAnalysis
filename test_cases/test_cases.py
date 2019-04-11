@@ -27,7 +27,7 @@ class MongoWrapperTests(unittest.TestCase):
                 print("Error: Authentication Failed")
 
         pullTweets = twitter_setup()
-        tweets = pullTweets.search(q=["Abercrombie & Fitch Company"], count=200)
+        tweets = pullTweets.search(q=["Abercrombie & Fitch Company"], count=200, tweet_mode="extended")
         mongo = MongoWrapper()
         mongo.insert_tweet_into_db(tweets, "Abercrombie & Fitch Company")
 
