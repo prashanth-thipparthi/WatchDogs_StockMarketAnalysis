@@ -26,5 +26,6 @@ if __name__ == "__main__":
             stock_name = stock['Company']
             tweets = pullTweets.search(q=[stock_name], count=200, tweet_mode="extended")
             mng.insert_tweet_into_db(tweets, stock_name)
+            print(tweets[0].text)
             time.delay(20)
             
