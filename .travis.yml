@@ -5,7 +5,8 @@ python:
 services: docker
 
 install:
-  - docker build -t mngwrapper .
+  - ./auth_docker.sh
 
 script:
+  - docker build -t mngwrapper .
   - docker run -t mngwrapper
