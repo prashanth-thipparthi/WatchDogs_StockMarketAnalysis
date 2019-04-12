@@ -4,8 +4,11 @@ python:
 
 services: docker
 
+before_install:
+  - echo $super_secret_password | gpg --passphrase-fd 0 gcloud_project.json.gpg > gcloud_project.json
+
 install:
-  - docker login -u _json_key -p $GOOGLE_JSON_KEY https://gcr.io
+  - docker login -u _json_key -p ${cat gcloud_project.json} https://gcr.io
 
 script:
   - docker build -t mngwrapper .
