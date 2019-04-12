@@ -2,6 +2,11 @@
 FROM gcr.io/vaulted-zodiac-236605/watchdogs_dbpopulator
 
 #Clone and Run the populator code
-WORKDIR /home/WatchDogs_DatabasePopulator
-RUN git pull && pip install --upgrade git+ssh://git@github.com/CUBigDataClass/WatchDogs_MongoWrapper.git
+#WORKDIR /home/WatchDogs_DatabasePopulator
+#RUN git pull && pip install --upgrade git+ssh://git@github.com/CUBigDataClass/WatchDogs_MongoWrapper.git
 #RUN python populate_db.py
+WORKDIR /home
+RUN git clone git@github.com:CUBigDataClass/WatchDogs_MongoWrapper.git
+RUN pip install --upgrade git+ssh://git@github.com/CUBigDataClass/WatchDogs_MongoWrapper.git
+WORKDIR /home/WatchDogs_MongoWrapper/test_cases
+RUN python test_cases.py
