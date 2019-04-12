@@ -36,6 +36,11 @@ class MongoWrapperTests(unittest.TestCase):
         test = mongo_wrapper.get_tweets_of_stock("3D Systems Corporation")
         self.assertGreater(test.count(), 0)
 
+    def test_get_stocks_polarity(self):
+        mongo = MongoWrapper()
+        mongo.get_polarity_tweets_of_stock("3D Systems Corporation")
+
+
 if __name__ == '__main__':
     unittest.main()
 

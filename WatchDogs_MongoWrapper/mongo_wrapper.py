@@ -159,6 +159,30 @@ class MongoWrapper:
                 raise InputStockError
             else:
                 return tweets
+
+    def get_polarity_tweets_of_stock(self, stock_name):
+        """
+
+        :param stock_name: The company stock name you are searching for in database
+        :param limit: The threshold tweets I need to return
+        :return:
+        """
+        class InputStockError(Exception):
+            def __init__(self):
+                print('Either your stock does not exist in the database or it is newly added. Either case check your input')
+
+        my_query = {"Search_Text": stock_name, "Sentiment_Polarity":-1}
+        tweets_negative = self.tweets_client.find(my_query)
+        my_query = {"Search_Text": stock_name, "Sentiment_Polarity": 0}
+        tweets_neutral = self.tweets_client.find(my_query)
+        my_query = {"Search_Text": stock_name, "Sentiment_Polarity": 1}
+        tweets_positive = self.tweets_client.find(my_query)
+        if tweets_negative.count() == 0 and tweets_neutral.count()==0 and tweets_positive.count()==0:
+            raise InputStockError
+        else:
+            return (tweets_negative, tweets_neutral, tweets_positive)
+
+
     def print_statistics(self, coll_name) -> int:
         """
         return # of documents in a collection
