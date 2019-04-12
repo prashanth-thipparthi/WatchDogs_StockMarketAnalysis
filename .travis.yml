@@ -6,7 +6,7 @@ services: docker
 
 install:
   - docker login -u _json_key -p $GOOGLE_JSON_KEY https://gcr.io
-  -docker build -t mngwrapper .
+  - docker build -t mngwrapper .
 
 script:
   - docker run -t mngwrapper
