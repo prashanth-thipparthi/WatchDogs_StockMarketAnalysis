@@ -5,7 +5,7 @@ python:
 services: docker
 
 before_install:
-  - echo $super_secret_password | gpg --passphrase-fd 0 gcloud_project.json.gpg > gcloud_project.json
+  - echo $super_secret_password | gpg --passphrase-fd 0 gcloud_project.json.gpg
 
 install:
   - docker login -u _json_key -p ${cat gcloud_project.json} https://gcr.io
