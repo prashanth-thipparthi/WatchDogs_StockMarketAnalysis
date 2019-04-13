@@ -12,4 +12,4 @@ install:
 
 script:
   - docker build -t mngwrapper .
-  - docker run -t mngwrapper
+  - docker run -td mngwrapper
