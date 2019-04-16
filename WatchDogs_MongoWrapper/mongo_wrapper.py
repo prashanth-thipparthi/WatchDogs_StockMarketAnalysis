@@ -93,6 +93,7 @@ class MongoWrapper:
                     "Time": time_of_tweet,
                     "Geo": tweet.geo,
                     "Coordinates": tweet.coordinates,
+                    # "Place": tweet.place.bounding_box.coordinates,
                     "Search_Text": search_string,
                     "Text": tweet.full_text,
                     "Sentiment_Value": sentiment_value,
@@ -159,6 +160,42 @@ class MongoWrapper:
                 raise InputStockError
             else:
                 return tweets
+
+    def get_lat_long(self, stock_name):
+        """
+
+        :param stock_name:
+        :return:
+        """
+        class InputStockError(Exception):
+            def __init__(self):
+                print('Either your stock does not exist in the database or it is newly added. Either case check your input')
+
+        my_query = {"Search_Text": stock_name, "Sentiment_Polarity":-1, "Coordinates":{"$ne":"null"}}
+        tweets_negative = self.tweets_client.find(my_query)
+        my_query = {"Search_Text": stock_name, "Sentiment_Polarity": 0, "Coordinates":{"$ne":"null"}}
+        tweets_neutral = self.tweets_client.find(my_query)
+        my_query = {"Search_Text": stock_name, "Sentiment_Polarity": 1, "Coordinates":{"$ne":"null"}}
+        tweets_positive = self.tweets_client.find(my_query)
+        if tweets_negative.count() == 0 and tweets_neutral.count() == 0 and tweets_positive.count() == 0:
+            raise InputStockError
+        else:
+            neg_lat = []
+            neg_long = []
+            neu_lat = []
+            neu_long = []
+            pos_lat = []
+            pos_long = []
+            for each_tweet in tweets_negative:
+                lat_long_list = each_tweet['Geo']['coordinates']
+                neg_lat.append(lat_long_list[0])
+                neg_long.append(lat_long_list[1])
+            for each_tweet in tweets_neutral:
+                lat_long_list = each_tweet['Geo']['coordinates']
+                neu_lat.append(lat_long_list[0])
+                neg_long.append(lat_long_list[1])
+            return (tweets_negative, tweets_neutral, tweets_positive)
+
 
     def get_polarity_tweets_of_stock(self, stock_name):
         """

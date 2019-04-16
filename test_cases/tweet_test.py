@@ -1,10 +1,10 @@
 import tweepy
 from WatchDogs_MongoWrapper import MongoWrapper
 
-CONSUMER_KEY = '1pmAQV2KBiItz3OsGWIrAPQrv'
-CONSUMER_SECRET = 'oPIkrswP7eJh1gwaDiyOY8meYbcMTMhEsKnG5sdtethQSxSlMB'
-ACCESS_TOKEN = '985993112-hRyi1aAGNzOGy0jan6WxC5UiEedZsCezpl1WxVKF'
-ACCESS_SECRET = 'LrbZTey5eVpeRtOwOpdAMj0XVztupHF3vkqze4yBcdq7h'
+CONSUMER_KEY = "lQu7vXPH6hMNQ92LLVOFD5K8b"
+CONSUMER_SECRET = "NwoUxJgXZkA6Fm0IJpNC6S0bavZy3YVcblKrQQbna7R4lwj39X"
+ACCESS_TOKEN = "1170146904-NfXboXT6cjI8zcThUiixJp1AztyJH4Hw8wdkDwj"
+ACCESS_SECRET = "rpRprMkactMVuKiJsESZGjEUmbixPABB3NjIKOxymJT7K"
 
 
 def twitter_setup():
@@ -19,6 +19,6 @@ def twitter_setup():
 
 if __name__ == "__main__":
     pullTweets = twitter_setup()
-    tweets = pullTweets.search(q=["python"], count=200)
+    tweets = pullTweets.search(q=["Boeing"], count=200, tweet_mode="extended")
     mongo = MongoWrapper()
-    mongo.insert_tweet_into_db(tweets, "python")
+    mongo.get_polarity_tweets_of_stock("Aramark")
