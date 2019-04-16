@@ -2,12 +2,20 @@ import signal
 import tweepy
 from WatchDogs_MongoWrapper import MongoWrapper
 import time
+import random
 
-CONSUMER_KEY = '1pmAQV2KBiItz3OsGWIrAPQrv'
-CONSUMER_SECRET = 'oPIkrswP7eJh1gwaDiyOY8meYbcMTMhEsKnG5sdtethQSxSlMB'
-ACCESS_TOKEN = '985993112-hRyi1aAGNzOGy0jan6WxC5UiEedZsCezpl1WxVKF'
-ACCESS_SECRET = 'LrbZTey5eVpeRtOwOpdAMj0XVztupHF3vkqze4yBcdq7h'
-
+def get_keys():
+    if random.randint(0, 1) == 3:
+        CONSUMER_KEY = '1pmAQV2KBiItz3OsGWIrAPQrv'
+        CONSUMER_SECRET = 'oPIkrswP7eJh1gwaDiyOY8meYbcMTMhEsKnG5sdtethQSxSlMB'
+        ACCESS_TOKEN = '985993112-hRyi1aAGNzOGy0jan6WxC5UiEedZsCezpl1WxVKF'
+        ACCESS_SECRET = 'LrbZTey5eVpeRtOwOpdAMj0XVztupHF3vkqze4yBcdq7h'
+    else:
+        CONSUMER_KEY = "lQu7vXPH6hMNQ92LLVOFD5K8b"
+        CONSUMER_SECRET = "NwoUxJgXZkA6Fm0IJpNC6S0bavZy3YVcblKrQQbna7R4lwj39X"
+        ACCESS_TOKEN = "1170146904-NfXboXT6cjI8zcThUiixJp1AztyJH4Hw8wdkDwj"
+        ACCESS_SECRET = "rpRprMkactMVuKiJsESZGjEUmbixPABB3NjIKOxymJT7K"
+    return (CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_SECRET)
 
 class GracefulKiller:
   kill_now = False
@@ -20,6 +28,7 @@ class GracefulKiller:
 
 def twitter_setup():
     try:
+        CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_SECRET = get_keys()
         auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
         auth.set_access_token(ACCESS_TOKEN, ACCESS_SECRET)
         api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
@@ -29,8 +38,8 @@ def twitter_setup():
 if __name__ == "__main__":
     mng = MongoWrapper()
     killer = GracefulKiller()
-    pullTweets = twitter_setup()  # Should this be in or out of the loop. An eternal confusion
     while 1:
+        pullTweets = twitter_setup()  # Should this be in or out of the loop. An eternal confusion
         stock_companies = []
         for stock in mng.get_all_stocks():
             stock_companies.append(stock['Company'])
