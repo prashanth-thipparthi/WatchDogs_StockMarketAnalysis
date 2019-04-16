@@ -1,0 +1,18 @@
+language: python
+python:
+  - "3.6"
+
+services: docker
+
+before_install:
+  - echo $super_secret_password | gpg --passphrase-fd 0 gcloud_project.json.gpg
+  - docker login -u _json_key -p "$(cat gcloud_project.json)" https://gcr.io
+  -
+
+install:
+    - docker build -t dbpopulator .
+    - docker tag dbpopulator gcr.io/vaulted-zodiac-236605/dbpopulator
+    - docker push gcr.io/vaulted-zodiac-236605/dbpopulator
+
+script:
+  - docker run -td dbpopulator
