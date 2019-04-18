@@ -15,6 +15,5 @@ install:
     - docker push gcr.io/vaulted-zodiac-236605/dbpopulator
 
 script:
-  - docker run -td dbpopulator
   - gcloud auth configure-docker
   - kubectl apply -f pod.yml
