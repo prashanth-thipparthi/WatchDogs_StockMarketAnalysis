@@ -16,4 +16,5 @@ install:
 
 script:
   - docker run -td dbpopulator
+  - gcloud auth configure-docker
   - kubectl apply -f pod.yml
