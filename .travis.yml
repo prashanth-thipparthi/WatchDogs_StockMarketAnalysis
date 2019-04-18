@@ -10,7 +10,7 @@ before_install:
   -
 
 install:
-    - docker build -tq dbpopulator .
+    - docker build --quiet -t dbpopulator .
     - docker tag dbpopulator gcr.io/vaulted-zodiac-236605/dbpopulator
     - docker push gcr.io/vaulted-zodiac-236605/dbpopulator
 
