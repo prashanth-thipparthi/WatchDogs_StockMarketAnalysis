@@ -27,9 +27,9 @@ class MongoWrapperTests(unittest.TestCase):
                 print("Error: Authentication Failed")
 
         pullTweets = twitter_setup()
-        tweets = pullTweets.search(q=["Abercrombie & Fitch Company"], count=200, tweet_mode="extended")
+        tweets = pullTweets.search(q=["Facebook"], count=200, tweet_mode="extended")
         mongo = MongoWrapper()
-        mongo.insert_tweet_into_db(tweets, "Abercrombie & Fitch Company")
+        mongo.insert_tweet_into_db(tweets, "Facebook")
 
     def test_stocks_def(self):
         mongo_wrapper = MongoWrapper()
@@ -39,7 +39,9 @@ class MongoWrapperTests(unittest.TestCase):
     def test_get_stocks_polarity(self):
         mongo = MongoWrapper()
         mongo.get_polarity_tweets_of_stock("3D Systems Corporation")
-
+    def test_lat_long(self):
+        mongo = MongoWrapper()
+        print(mongo.get_lat_long('Facebook'))
 
 if __name__ == '__main__':
     unittest.main()

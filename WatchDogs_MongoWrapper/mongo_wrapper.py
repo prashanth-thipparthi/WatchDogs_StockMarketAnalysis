@@ -187,14 +187,42 @@ class MongoWrapper:
             pos_lat = []
             pos_long = []
             for each_tweet in tweets_negative:
-                lat_long_list = each_tweet['Geo']['coordinates']
-                neg_lat.append(lat_long_list[0])
-                neg_long.append(lat_long_list[1])
+                try:
+                    lat_long_list = each_tweet['Geo']['coordinates']
+                    neg_lat.append(lat_long_list[0])
+                    neg_long.append(lat_long_list[1])
+                except Exception as e:
+                    exc_type, exc_obj, exc_tb = sys.exc_info()
+                    print('Exception is {excp}, line is {line}, some extra comments: {e_string}'.format(excp=exc_type,
+                                                                                                                  line=exc_tb.tb_lineno,
+                                                                                                                  e_string = e))
+                    continue
             for each_tweet in tweets_neutral:
-                lat_long_list = each_tweet['Geo']['coordinates']
-                neu_lat.append(lat_long_list[0])
-                neg_long.append(lat_long_list[1])
-            return (tweets_negative, tweets_neutral, tweets_positive)
+                try:
+                    lat_long_list = each_tweet['Geo']['coordinates']
+                    neu_lat.append(lat_long_list[0])
+                    neu_long.append(lat_long_list[1])
+                except Exception as e:
+                    exc_type, exc_obj, exc_tb = sys.exc_info()
+                    if e.__class__.__name__ != 'TypeError':
+                        continue
+                    else:
+                        print('Exception is {excp}, line is {line}, some extra comments: {e_string}'.format(excp=exc_type,
+                                                                                                                  line=exc_tb.tb_lineno,
+                                                                                                                  e_string = e))
+                    continue
+            for each_tweet in tweets_positive:
+                try:
+                    lat_long_list = each_tweet['Geo']['coordinates']
+                    pos_lat.append(lat_long_list[0])
+                    pos_long.append(lat_long_list[1])
+                except Exception as e:
+                    exc_type, exc_obj, exc_tb = sys.exc_info()
+                    print('Exception is {excp}, line is {line}, some extra comments: {e_string}'.format(excp=exc_type,
+                                                                                                                  line=exc_tb.tb_lineno,
+                                                                                                                  e_string = e))
+                    continue
+            return ([neg_lat, neg_long], [neu_lat, neu_long], [pos_lat, pos_long])
 
 
     def get_polarity_tweets_of_stock(self, stock_name):
