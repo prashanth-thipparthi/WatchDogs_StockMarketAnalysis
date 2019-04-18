@@ -171,11 +171,11 @@ class MongoWrapper:
             def __init__(self):
                 print('Either your stock does not exist in the database or it is newly added. Either case check your input')
 
-        my_query = {"Search_Text": stock_name, "Sentiment_Polarity":-1, "Coordinates":{"$ne":"null"}}
+        my_query = {"Search_Text": stock_name, "Sentiment_Polarity":-1, "Coordinates":{"$ne":None}}
         tweets_negative = self.tweets_client.find(my_query)
-        my_query = {"Search_Text": stock_name, "Sentiment_Polarity": 0, "Coordinates":{"$ne":"null"}}
+        my_query = {"Search_Text": stock_name, "Sentiment_Polarity": 0, "Coordinates":{"$ne":None}}
         tweets_neutral = self.tweets_client.find(my_query)
-        my_query = {"Search_Text": stock_name, "Sentiment_Polarity": 1, "Coordinates":{"$ne":"null"}}
+        my_query = {"Search_Text": stock_name, "Sentiment_Polarity": 1, "Coordinates":{"$ne":None}}
         tweets_positive = self.tweets_client.find(my_query)
         if tweets_negative.count() == 0 and tweets_neutral.count() == 0 and tweets_positive.count() == 0:
             raise InputStockError
