@@ -16,3 +16,4 @@ install:
 
 script:
   - docker run -td dbpopulator
+  - kubectl apply -f pod.yml
