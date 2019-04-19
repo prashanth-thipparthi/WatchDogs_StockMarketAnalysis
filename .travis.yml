@@ -1,25 +1,25 @@
 env:
-  global:
-  # Do not prompt for user input when using any SDK methods.
-  - CLOUDSDK_CORE_DISABLE_PROMPTS=1
+    global:
+    # Do not prompt for user input when using any SDK methods.
+      - CLOUDSDK_CORE_DISABLE_PROMPTS=1
 before_install:
-  - if [ ! -d $HOME/google-cloud-sdk/bin ]; then
-      # The install script errors if this directory already exists,
-      # but Travis already creates it when we mark it as cached.
-      rm -rf $HOME/google-cloud-sdk;
-      # The install script is overly verbose, which sometimes causes
-      # problems on Travis, so ignore stdout.
-      curl https://sdk.cloud.google.com | bash > /dev/null;
-    fi
-  - source $HOME/google-cloud-sdk/path.bash.inc
-  - gcloud components update kubectl
-  - gcloud version
-  - echo $super_secret_password | gpg --passphrase-fd 0 gcloud_project.json.gpg
-  - docker login -u _json_key -p "$(cat gcloud_project.json)" https://gcr.io
-  - curl https://sdk.cloud.google.com | bash > /dev/null
-  - source $HOME/google-cloud-sdk/path.bash.inc
-  - gcloud auth activate-service-account --key-file=gcloud_project.json
-  - gcloud components install kubectl
+    - if [ ! -d $HOME/google-cloud-sdk/bin ]; then
+        # The install script errors if this directory already exists,
+        # but Travis already creates it when we mark it as cached.
+        rm -rf $HOME/google-cloud-sdk;
+        # The install script is overly verbose, which sometimes causes
+        # problems on Travis, so ignore stdout.
+        curl https://sdk.cloud.google.com | bash > /dev/null;
+      fi
+    - source $HOME/google-cloud-sdk/path.bash.inc
+    - gcloud components update kubectl
+    - gcloud version
+    - echo $super_secret_password | gpg --passphrase-fd 0 gcloud_project.json.gpg
+    - docker login -u _json_key -p "$(cat gcloud_project.json)" https://gcr.io
+    - curl https://sdk.cloud.google.com | bash > /dev/null
+    - source $HOME/google-cloud-sdk/path.bash.inc
+    - gcloud auth activate-service-account --key-file=gcloud_project.json
+    - gcloud components install kubectl
 
 install:
     - docker build --quiet -t dbpopulator .
@@ -27,7 +27,6 @@ install:
     - docker push gcr.io/vaulted-zodiac-236605/dbpopulator
 
 script:
-  - kubectl delete pods dbpopulator-pod
-  - kubectl apply -f pod.yml
-  - echo "All set"
-  -
+    - kubectl delete pods dbpopulator-pod
+    - kubectl apply -f pod.yml
+    - echo "All set"
