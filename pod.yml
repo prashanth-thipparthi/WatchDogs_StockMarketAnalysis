@@ -3,12 +3,10 @@ kind: Pod
 metadata:
     name: dbpopulator-pod
     labels:
-       app: web
+       app: dbpopulator
        env: test
 spec:
      containers:
         - name: dbpopulator
           image: gcr.io/vaulted-zodiac-236605/dbpopulator
-          command: ["python"]
-          args: ["/home/WatchDogs_DatabasePopulator/populate_db.py"]
 
