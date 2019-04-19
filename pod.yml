@@ -9,4 +9,5 @@ spec:
      containers:
         - name: dbpopulator
           image: gcr.io/vaulted-zodiac-236605/dbpopulator
+          command: ["python", "/home/WatchDogs_DatabasePopulator/populate_db.py"]
 

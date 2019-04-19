@@ -7,7 +7,10 @@ services: docker
 before_install:
   - echo $super_secret_password | gpg --passphrase-fd 0 gcloud_project.json.gpg
   - docker login -u _json_key -p "$(cat gcloud_project.json)" https://gcr.io
-  -
+  - curl https://sdk.cloud.google.com | bash > /dev/null
+  - source $HOME/google-cloud-sdk/path.bash.inc
+  - gcloud auth activate-service-account --key-file=gcloud_project.json
+  - gcloud components install kubectl
 
 install:
     - docker build --quiet -t dbpopulator .
@@ -15,4 +18,7 @@ install:
     - docker push gcr.io/vaulted-zodiac-236605/dbpopulator
 
 script:
-  - echo "The image should have been pushed"
+  - kubectl delete pods dbpopulator-pod
+  - kubectl apply -f pod.yml
+  - echo "All set"
+  -
