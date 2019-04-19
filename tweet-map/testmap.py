@@ -16,6 +16,14 @@ df['text'] = df['airport'] + '' + df['city'] + ', ' + df['state'] + '' + 'Arriva
 scl = [ [0,"rgb(39,174,96)"],[0.35,"rgb(46,204,113)"],[0.5,"rgb(241,196,15)"],\
     [0.6,"rgb(243,156,18)"],[0.7,"rgb(231,76,60)"],[1,"rgb(192,57,43)"] ]
 
+mongo = MongoWrapper()
+
+negCoord, neuCoord, posCoord = mongo.get_lat_long('Microsoft')
+
+print('\n')
+print(negCoord[0])
+print('\n')
+
 app = dash.Dash()
 
 app.layout = html.Div(children=[
