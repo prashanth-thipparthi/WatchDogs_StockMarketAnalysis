@@ -7,4 +7,4 @@ RUN git clone git@github.com:CUBigDataClass/WatchDogs_DatabasePopulator.git
 RUN pip install --upgrade git+ssh://git@github.com/CUBigDataClass/WatchDogs_MongoWrapper.git
 WORKDIR /home/WatchDogs_DatabasePopulator
 RUN pip install tweepy
-#RUN python populate_db.py
+RUN python populate_db.py
