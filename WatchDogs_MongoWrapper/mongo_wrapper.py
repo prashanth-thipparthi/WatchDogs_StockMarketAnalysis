@@ -4,6 +4,7 @@ import re
 from textblob import TextBlob
 import datetime
 import sys
+import pandas as pd
 
 '''
 Stocks: A Collection which contains all the Stocks in NYSE.
@@ -110,6 +111,33 @@ class MongoWrapper:
                                                                                                                   line=line,
                                                                                                                   e_string = e))
                     # exit(1)
+
+    def get_tweets_with_lat_long(self, stock_name):
+        """
+
+        :param company_name:
+        :return:
+        """
+        my_query = {"Search_Text": stock_name, "Coordinates": {"$ne": None}}
+        tweets = self.tweets_client.find(my_query)
+        df = pd.DataFrame()
+        for each_tweet in tweets:
+            try:
+                lat_long_list = each_tweet['Geo']['coordinates']
+                sentiment_value = each_tweet["Sentiment_Value"]
+                data = pd.DataFrame({"Latitude": [lat_long_list[0]], "Longitude":[lat_long_list[1]], "Sentiment_Value":[sentiment_value]}
+                                    )
+                df= df.append(data)
+            except Exception as e:
+                exc_type, exc_obj, exc_tb = sys.exc_info()
+                print('Exception is {excp}, line is {line}, some extra comments: {e_string}'.format(excp=exc_type,
+                                                                                                    line=exc_tb.tb_lineno,
+                                                                                                    e_string=e))
+                raise
+        df.index = range(1, len(df) + 1)
+        return df
+
+
 
     def filter_docs(self, start: datetime=None, end: datetime=None) -> pymongo.cursor.Cursor:
         """
