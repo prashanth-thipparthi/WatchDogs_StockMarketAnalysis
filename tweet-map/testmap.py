@@ -20,30 +20,35 @@ mongo = MongoWrapper()
 
 negCoord, neuCoord, posCoord = mongo.get_lat_long('Facebook')
 
+getTweets =  mongo.get_tweets_with_lat_long('Facebook')
+allLatitude = getTweets['Latitude']
+allLongitude = getTweets['Longitude']
+allSentiment = getTweets['Sentiment_Value']
+
 
 
 print('\n')
 # print(negCoord[0])
-df1 = pd.DataFrame()
-df2 = pd.DataFrame()
-df3 = pd.DataFrame()
-df4 = pd.DataFrame()
-df5 = pd.DataFrame()
-df6 = pd.DataFrame()
-
-df1['negLat'] = negCoord[0]
-df2['negLong'] = negCoord[1]
-df3['posLat'] = posCoord[0]
-df4['posLong'] = posCoord[1]
-df5['neuLat'] = neuCoord[0]
-df6['neuLong'] = neuCoord[1]
+# df1 = pd.DataFrame()
+# df2 = pd.DataFrame()
+# df3 = pd.DataFrame()
+# df4 = pd.DataFrame()
+# df5 = pd.DataFrame()
+# df6 = pd.DataFrame()
+# print(mongo.get_tweets_with_lat_long('Facebook'))
+# df1['negLat'] = negCoord[0]
+# df2['negLong'] = negCoord[1]
+# df3['posLat'] = posCoord[0]
+# df4['posLong'] = posCoord[1]
+# df5['neuLat'] = neuCoord[0]
+# df6['neuLong'] = neuCoord[1]
 
 print('\n')
 # merge = pd.merge(df1,df3,on='latty', how='inner')
 # print(merge)
 
-print(df5['neuLat'])
-print(df6['neuLong'])
+# print(df5['neuLat'])
+# print(df6['neuLong'])
 
 # print(df1['latty'])
 print('\n')
@@ -62,13 +67,9 @@ app.layout = html.Div(children=[
             'data' :[{
                 'type':'scattergeo',
                 'locationmode':'USA-states',
-                # 'lon' : df['long'],
-                # 'lat' : df['lat'],
-                # 'text' : df['text'],
-                # 'lon':df['longitude'],
-                # 'lat':df['latitude'],
-                'lon' : df2['negLong'] + df4['posLong'] + df6['neuLong'],
-                'lat' : df1['negLat'] + df3['posLat'] + df5['neuLat'],
+                'lon' : allLongitude,
+                'lat' : allLatitude,
+                'text' : allSentiment,
                 'mode':'markers',
                 'marker':{ 
                     'size':8, 
@@ -82,7 +83,7 @@ app.layout = html.Div(children=[
                     },
                     'colorscale' : scl,
                     'cmin' : -1,
-                    'color' : df['cnt'],
+                    'color' : allSentiment,
                     'cmax' : 1,
                     'colorbar':{
                         'title':"Polarity Scale"
@@ -98,7 +99,7 @@ app.layout = html.Div(children=[
                     'size':15,
                 },
                 'geo' :{
-                    'scope':'usa',
+                    # 'scope':'usa',
                     # 'projection':dict( 'type'='albers usa' ),
                     'showland' : True,
                     'landcolor' : "rgb(250, 250, 250)",
