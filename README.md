@@ -5,3 +5,7 @@ There are two main apps:
 2. **tweet-map** which is a map that shows where the tweets were for each search word and then color codes the dot location from red to yellow to green if tweets are overall 'positive', 'negative', or 'neutral'
 
 pip install --upgrade git+https://github.com/CUBigDataClass/WatchDogs_MongoWrapper.git
+
+### VM
+$ virtualenv venv # creates a virtualenv called "venv"
+$ source venv/bin/activate # uses the virtualenv
