@@ -102,7 +102,15 @@ def update_graph_live(value):
                     'color' : allSentiment,
                     'cmax' : 1,
                     'colorbar':{
-                        'title':"Polarity Scale"
+                        'title':"Polarity Scale",
+                        'thickness':20,
+                        'titleside' : "right",
+                        # 'outlinecolor' : "rgba(68, 68, 68, 0)",
+                        'ticks' : "outside",
+                        'ticklen' : 3,
+                        # 'showticksuffix' : "last",
+                        # 'ticksuffix' : " inches",
+                        'dtick' : 0.1
                     }
                 }
             }],
@@ -120,7 +128,15 @@ def update_graph_live(value):
                         'subunitcolor' : "rgb(217, 217, 217)",
                         'countrycolor' : "rgb(217, 217, 217)",
                         'countrywidth' : 0.5,
-                        'subunitwidth' : 0.5        
+                        'subunitwidth' : 1,
+                        'showsubunits': True,
+                        'showcountries':True,
+                        'showcoastlines':True,
+                        'coastlinecolor':"rgb(155, 155, 155)",
+                        'showframe':True,
+                        'framecolor': "rgb(155, 155, 155)"
+                        # 'showocean':True
+                        # 'showlakes':True        
                     },
                 }  
         }
