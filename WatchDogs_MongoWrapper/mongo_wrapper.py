@@ -32,6 +32,7 @@ class MongoWrapper:
 
     def get_logger(self, logger_name):
         test_logger = logging.getLogger(logger_name)
+        test_logger.setLevel(logging.INFO)
         test_logger.addHandler(logstash.TCPLogstashHandler(self.kibanalogger, 5000, version=1))
         return test_logger
 
