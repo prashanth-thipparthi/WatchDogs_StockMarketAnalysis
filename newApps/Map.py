@@ -17,6 +17,7 @@ app.layout = html.Div([
                 style={
                     'backgroundColor':'transparent', 'borderColor':'rgb(101, 101, 101)'
                 },
+                value='Microsoft',
                 id='my_dropdown',
                 placeholder='Select a stock',
                 options=[
@@ -121,6 +122,8 @@ def update_graph_live(value):
             }],
 
                 'layout' :{
+                    'paper_bgcolor':'rgb(201, 201, 201)',
+                    'plot_bgcolor':'rgb(201, 201, 201)',
                     'title': "Twitter Sentiment for {}\n".format(value), 
                     'font':{
                         'size':15,
@@ -132,7 +135,7 @@ def update_graph_live(value):
                         'landcolor' : "rgb(201, 201, 201)",
                         'subunitcolor' : "rgb(151, 151, 151)",
                         'countrycolor' : "rgb(151, 151, 151)",
-                        'countrywidth' : 0.5,
+                        'countrywidth' : 1.5,
                         'subunitwidth' : 1,
                         'showsubunits': True,
                         'showcountries':True,
@@ -140,7 +143,8 @@ def update_graph_live(value):
                         'coastlinecolor':"rgb(101, 101, 101)",
                         'showframe':False,
                         # 'framecolor': "rgb(155, 155, 155)"
-                        # 'showocean':True
+                        'showocean':True,
+                        'oceancolor':"rgb(201, 201, 201)"
                         # 'showlakes':True        
                     },
                 }  
