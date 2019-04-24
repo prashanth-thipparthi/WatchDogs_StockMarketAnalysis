@@ -9,7 +9,7 @@ Kafka and Spark Integration in the Watch Dogs Project
 
 3.Create a topic - creating a topic - /home/prth3635/kafka/kafka_2.12-2.2.0/bin/kafka-topics.sh --create --zookeeper localhost:2181 --topic twitter --replication-factor 1 -partitions 3
 
-cd into src folder: 
+cd into src folder:  
 4.-Run kafka_twitterstream_producer.py (Start Producer)
 
 /home/prth3635/spark/spark-2.4.1-bin-hadoop2.7/bin/spark-submit kafka_twitterstream_producer.py
