@@ -15,7 +15,7 @@ app.layout = html.Div([
         html.Div(
             dcc.Dropdown(
                 style={
-                    'backgroundColor':'transparent'
+                    'backgroundColor':'transparent', 'borderColor':'rgb(101, 101, 101)'
                 },
                 id='my_dropdown',
                 placeholder='Select a stock',
@@ -55,7 +55,7 @@ app.layout = html.Div([
         )
     ]),        
 
-    html.Div(id='live-update-graph'),
+    html.Div(id='live-update-graph', style={'backgroundColor':'transparent'}),
 
     dcc.Interval(
         id='interval-update',
