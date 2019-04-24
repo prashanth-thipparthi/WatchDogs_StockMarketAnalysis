@@ -32,7 +32,7 @@ class MongoWrapper:
 
     def get_logger(self, logger_name):
         test_logger = logging.getLogger(logger_name)
-        test_logger.addHandler(logstash.TCPLogstashHandler(self.kibanalogger, 5000))
+        test_logger.addHandler(logstash.TCPLogstashHandler(self.kibanalogger, 5000, version=1))
         return test_logger
 
     '''This will load a newline separated text file into the Stocks document'''
