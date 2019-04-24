@@ -5,6 +5,8 @@ from textblob import TextBlob
 import datetime
 import sys
 import pandas as pd
+import logging
+import logstash
 
 '''
 Stocks: A Collection which contains all the Stocks in NYSE.
@@ -26,6 +28,12 @@ class MongoWrapper:
         self.db = self.my_client[constants.mongo_db_name]
         self.stocks_client = self.db[self.Stocks_collection]
         self.tweets_client = self.db[self.Tweets_collection]
+        self.kibanalogger = constants.kibanalogger
+
+    def get_logger(self, logger_name):
+        test_logger = logging.getLogger(logger_name)
+        test_logger.addHandler(logstash.TCPLogstashHandler(self.kibanalogger, 5000))
+        return test_logger
 
     '''This will load a newline separated text file into the Stocks document'''
     def load_companies(self, companies_file) -> None:
