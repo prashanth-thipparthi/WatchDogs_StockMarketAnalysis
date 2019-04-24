@@ -1,17 +1,22 @@
+import os
 import dash
 import dash_html_components as html
 import dash_core_components as dcc
 from dash.dependencies import Output, Event, Input
-import plotly
-import plotly.graph_objs as go
 from WatchDogs_MongoWrapper import MongoWrapper
 import pandas as pd
 
 app = dash.Dash(__name__)
+
+server = app.server
+
 app.layout = html.Div([
-    html.Div(children=[
+    html.Div(style={'backgroundColor':'transparent'}, children=[
         html.Div(
             dcc.Dropdown(
+                style={
+                    'backgroundColor':'transparent'
+                },
                 id='my_dropdown',
                 placeholder='Select a stock',
                 options=[
@@ -89,7 +94,7 @@ def update_graph_live(value):
                 'mode':'markers',
                 'marker':{ 
                     'size':8, 
-                    'opacity':0.8,
+                    # 'opacity':0.8,
                     'reversescale':True,
                     'autocolorscale':False,
                     'symbol':'circle',
@@ -124,17 +129,17 @@ def update_graph_live(value):
                         # 'scope':'usa',
                         # 'projection':dict( 'type'='albers usa' ),
                         'showland' : True,
-                        'landcolor' : "rgb(250, 250, 250)",
-                        'subunitcolor' : "rgb(217, 217, 217)",
-                        'countrycolor' : "rgb(217, 217, 217)",
+                        'landcolor' : "rgb(201, 201, 201)",
+                        'subunitcolor' : "rgb(151, 151, 151)",
+                        'countrycolor' : "rgb(151, 151, 151)",
                         'countrywidth' : 0.5,
                         'subunitwidth' : 1,
                         'showsubunits': True,
                         'showcountries':True,
                         'showcoastlines':True,
-                        'coastlinecolor':"rgb(155, 155, 155)",
-                        'showframe':True,
-                        'framecolor': "rgb(155, 155, 155)"
+                        'coastlinecolor':"rgb(101, 101, 101)",
+                        'showframe':False,
+                        # 'framecolor': "rgb(155, 155, 155)"
                         # 'showocean':True
                         # 'showlakes':True        
                     },
