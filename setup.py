@@ -5,7 +5,10 @@ setup(
  packages=['WatchDogs_MongoWrapper'],
 install_requires=[
     'pymongo',
-    'textblob'
+    'textblob',
+    'pandas',
+    'python-logstash',
+    'logging'
     ],
  version='2.0',
 
