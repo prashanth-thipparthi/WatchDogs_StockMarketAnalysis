@@ -290,21 +290,13 @@ class MongoWrapper:
                     "Sentiment_Value": 0,
                     "Sentiment_Polarity": 1
                 }
-        pool = Pool(processes=3)
-        process_list = []
         my_query = {"Search_Text": stock_name, "Sentiment_Polarity":-1}
-        process_list.append(pool.apply_async(self.tweets_client.find, args=(my_query,field_required)))
-
+        tweets_negative = self.tweets_client.find(my_query,field_required)
         my_query = {"Search_Text": stock_name, "Sentiment_Polarity": 0}
-        process_list.append(pool.apply_async(self.tweets_client.find, args=(my_query,field_required)))
+        tweets_neutral = self.tweets_client.find(my_query,field_required)
         my_query = {"Search_Text": stock_name, "Sentiment_Polarity": 1}
-        process_list.append(pool.apply_async(self.tweets_client.find, args=(my_query,field_required)))
-        pool.close()
-        pool.join()
-        tweets_negative = process_list[0].get()
-        tweets_neutral = process_list[1].get()
-        tweets_positive = process_list[2].get()
-        if tweets_negative.count() == 0 and tweets_neutral.count() == 0 and tweets_positive.count()== 0:
+        tweets_positive = self.tweets_client.find(my_query,field_required)
+        if tweets_negative.count() == 0 and tweets_neutral.count() == 0 and tweets_positive.count() == 0:
             raise InputStockError
         else:
             return (tweets_negative, tweets_neutral, tweets_positive)
