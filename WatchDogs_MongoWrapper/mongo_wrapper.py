@@ -278,16 +278,9 @@ class MongoWrapper:
                 print('Either your stock does not exist in the database or it is newly added. Either case check your input')
         field_required = {
                     "_id" : 0,
-                    "tweet_id" : 0,
-                    "DateTimeObject": 0,
-                    "Date": 0,
-                    "Time": 0,
                     "Geo": 1,
                     "Coordinates": 1,
-                    # "Place": tweet.place.bounding_box.coordinates,
-                    "Search_Text": 0,
                     "Text": 1,
-                    "Sentiment_Value": 0,
                     "Sentiment_Polarity": 1
                 }
         my_query = {"Search_Text": stock_name, "Sentiment_Polarity":-1}
