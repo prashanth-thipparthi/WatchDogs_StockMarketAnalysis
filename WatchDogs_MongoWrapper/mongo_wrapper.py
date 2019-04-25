@@ -293,12 +293,12 @@ class MongoWrapper:
         pool = Pool(processes=3)
         process_list = []
         my_query = {"Search_Text": stock_name, "Sentiment_Polarity":-1}
-        process_list[0] = pool.apply_async(self.tweets_client.find, args=(my_query,field_required))
+        process_list.append(pool.apply_async(self.tweets_client.find, args=(my_query,field_required)))
 
         my_query = {"Search_Text": stock_name, "Sentiment_Polarity": 0}
-        process_list[1] = pool.apply_async(self.tweets_client.find, args=(my_query,field_required))
+        process_list.append(pool.apply_async(self.tweets_client.find, args=(my_query,field_required)))
         my_query = {"Search_Text": stock_name, "Sentiment_Polarity": 1}
-        process_list[2] = pool.apply_async(self.tweets_client.find, args=(my_query,field_required))
+        process_list.append(pool.apply_async(self.tweets_client.find, args=(my_query,field_required)))
         pool.close()
         pool.join()
         tweets_negative = process_list[0].get()
