@@ -1,3 +1,4 @@
 .idea/
 .git/
 db.sqlite3
+.directory

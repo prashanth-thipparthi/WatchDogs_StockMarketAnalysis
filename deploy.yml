@@ -1,21 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-deployment
+  name: api-deployment
   labels:
-    app: nginx
+    app: Flask
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: nginx
+      app: Flask
   template:
     metadata:
       labels:
-        app: nginx
+        app: Flask
     spec:
       containers:
-      - name: nginx
-        image: nginx:1.7.9
+      - name: Flask
+        image: gcr.io/vaulted-zodiac-236605/flask_api_server
+        command: ["python", "/home/watchodogs_api_server/app.py"]
         ports:
         - containerPort: 5000
