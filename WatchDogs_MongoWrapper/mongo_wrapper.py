@@ -7,6 +7,7 @@ import sys
 import pandas as pd
 import logging
 import logstash
+from multiprocessing import Pool
 
 '''
 Stocks: A Collection which contains all the Stocks in NYSE.
@@ -134,7 +135,10 @@ class MongoWrapper:
             try:
                 lat_long_list = each_tweet['Geo']['coordinates']
                 sentiment_value = each_tweet["Sentiment_Value"]
-                data = pd.DataFrame({"Latitude": [lat_long_list[0]], "Longitude":[lat_long_list[1]], "Sentiment_Value":[sentiment_value]}
+                full_text = each_tweet["Text"]
+                data = pd.DataFrame({"Latitude": [lat_long_list[0]], "Longitude": [lat_long_list[1]],
+                                     "Sentiment_Value":[sentiment_value], "Tweet_Text": full_text
+                                     }
                                     )
                 df= df.append(data)
             except Exception as e:
@@ -272,14 +276,33 @@ class MongoWrapper:
         class InputStockError(Exception):
             def __init__(self):
                 print('Either your stock does not exist in the database or it is newly added. Either case check your input')
-
+        field_required = {
+                    "_id" : 0,
+                    "tweet_id" : 0,
+                    "DateTimeObject": 0,
+                    "Date": 0,
+                    "Time": 0,
+                    "Geo": 1,
+                    "Coordinates": 1,
+                    # "Place": tweet.place.bounding_box.coordinates,
+                    "Search_Text": 0,
+                    "Text": 1,
+                    "Sentiment_Value": 0,
+                    "Sentiment_Polarity": 1
+                }
+        pool = Pool(processes=3)
+        process_list = []
         my_query = {"Search_Text": stock_name, "Sentiment_Polarity":-1}
-        tweets_negative = self.tweets_client.find(my_query)
+        process_list[0] = pool.apply_async(self.tweets_client.find, args=(my_query,field_required))
+
         my_query = {"Search_Text": stock_name, "Sentiment_Polarity": 0}
-        tweets_neutral = self.tweets_client.find(my_query)
+        process_list[1] = pool.apply_async(self.tweets_client.find, args=(my_query,field_required))
         my_query = {"Search_Text": stock_name, "Sentiment_Polarity": 1}
-        tweets_positive = self.tweets_client.find(my_query)
-        if tweets_negative.count() == 0 and tweets_neutral.count()==0 and tweets_positive.count()==0:
+        process_list[2] = pool.apply_async(self.tweets_client.find, args=(my_query,field_required))
+        tweets_negative = process_list[0].get()
+        tweets_neutral = process_list[1].get()
+        tweets_positive = process_list[2].get()
+        if tweets_negative.count() == 0 and tweets_neutral.count() == 0 and tweets_positive.count()== 0:
             raise InputStockError
         else:
             return (tweets_negative, tweets_neutral, tweets_positive)
