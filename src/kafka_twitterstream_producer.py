@@ -4,7 +4,7 @@ import tweepy
 from tweepy import OAuthHandler
 from tweepy import Stream
 from tweepy.streaming import StreamListener
-import twitter_config
+import twitter_credentials
 
 #TWITTER API CONFIGURATIONS
 consumer_api_key = twitter_credentials.consumer_api_key
@@ -41,5 +41,5 @@ class KafkaTweetsProducer(StreamListener):
 tweets_stream = Stream(auth, KafkaTweetsProducer())
 
 #Produce Data that has Game of Thrones hashtag (Tweets)
-tweets_stream.filter(track=['#GoTS7'])
+tweets_stream.filter(track=['football'])
 

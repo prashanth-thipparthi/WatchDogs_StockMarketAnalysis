@@ -30,40 +30,35 @@ from TweetParser import Tweet
 from pyspark.sql import SparkSession
 from pyspark.sql import SQLContext 
 
-def add_to_database(rdd):
-    pprint("ENTERED INTO THE DATABASE MODULEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
+def add_to_database(rdd, sqlContext):
     parsedTweetDataFrame = sqlContext.createDataFrame(rdd)
     parsedTweetDataFrame.write.format("com.mongodb.spark.sql.DefaultSource").mode("append").save()
     parsedTweetDataFrame.pprint()
-    pprint("*****************************************************************************************")
-    return parsedTweetDataFrame
-#if __name__ == "__main__":
 
-def empty_rdd():
-    print("RDD is empty")
+if __name__ == "__main__":
+
     
-sparkSession = SparkSession.builder.appName("KafkaTweetsConsumerSpark").config("spark.mongodb.input.uri", "mongodb://prth3635:bigdata@34.83.10.248/check.check").config("spark.mongodb.output.uri", "mongodb://prth3635:bigdata@34.83.10.248/check.check").getOrCreate()
+    sparkSession = SparkSession.builder.appName("KafkaTweetsConsumerSpark").config("spark.mongodb.input.uri", "mongodb://prth3635:bigdata@34.83.10.248/check.check").config("spark.mongodb.output.uri", "mongodb://prth3635:bigdata@34.83.10.248/check.check").getOrCreate()
 	#Create Spark Context to Connect Spark Cluster
-sc = sparkSession.sparkContext
+    sc = sparkSession.sparkContext
 
 	#Set the Batch Interval is 10 sec of Streaming Context
-ssc = StreamingContext(sc, 10)
+    ssc = StreamingContext(sc, 10)
 
 	#Create Kafka Stream to Consume Data Comes From Twitter Topic
 	#localhost:2181 = Default Zookeeper Consumer Address
-kafkaTwitterStream = KafkaUtils.createStream(ssc, 'localhost:2181', 'spark-streaming', {'twitter':1})
-  
+    kafkaTwitterStream = KafkaUtils.createStream(ssc, 'localhost:2181', 'spark-streaming', {'twitter':1})
+    
     #Parse Twitter Data as json
-parsed = kafkaTwitterStream.map(lambda v: json.loads(v[1]))
+    parsed = kafkaTwitterStream.map(lambda v: json.loads(v[1]))
 
-parsedTweet = parsed.map(Tweet.parse_from_log_line)
-sqlContext = SQLContext(sc)
- 
-#parsedTweetDataframe = parsedTweet.map(add_to_database)  
-parsedTweet.foreachRDD(lambda rdd : sqlContext.createDataFrame(rdd).write.format("com.mongodb.spark.sql.DefaultSource").mode("append").save() if rdd.count() != 0 else empty_rdd() )
+    parsedTweet = parsed.map(Tweet.parse_from_log_line)
+    sqlContext = SQLContext(sc)
+    
+    parsedTweet.foreachRDD(lambda rdd, sqlContext : add_to_database)
    # parsedTweetDataFrame = sqlContext.createDataFrame(parsedTweet)
    # parsedTweetDataFrame.write.format("com.mongodb.spark.sql.DefaultSource").mode("append").save()
-parsedTweet.pprint()
+   # parsedTweetDataFrame.pprint()
     #Count the number of tweets per User
     #user_counts = parsed.map(lambda tweet: (tweet['user']["screen_name"], 1)).reduceByKey(lambda x,y: x + y)
 
@@ -71,8 +66,8 @@ parsedTweet.pprint()
     #user_counts.pprint()
 
     #Start Execution of Streams
-ssc.start()
-ssc.awaitTermination()
+    ssc.start()
+    ssc.awaitTermination()
 
 
 
