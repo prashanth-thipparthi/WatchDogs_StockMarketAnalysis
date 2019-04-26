@@ -4,6 +4,5 @@ WORKDIR /home
 RUN pip install flask
 RUN pip install --upgrade git+ssh://git@github.com/CUBigDataClass/WatchDogs_MongoWrapper.git
 RUN git clone git@github.com:CUBigDataClass/watchodogs_api_server.git
-RUN echo $(ls)
 WORKDIR /home/watchodogs_api_server
 #RUN python app.py

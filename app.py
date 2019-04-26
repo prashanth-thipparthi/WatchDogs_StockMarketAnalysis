@@ -6,6 +6,9 @@ import json
 
 app = Flask(__name__)
 
+@app.route('/api')
+def it_works():
+    return "Load Balancing Works!"
 
 @app.route('/api/get_tweets_with_lat_long/<stock_name>')
 def get_tweets_with_lat_long(stock_name):
@@ -30,4 +33,4 @@ def get_polarity_tweets_of_stock(stock_name):
         abort(404)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')
