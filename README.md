@@ -9,13 +9,14 @@ Kafka and Spark Integration in the Watch Dogs Project
 
 3.Create a topic - creating a topic - /home/prth3635/kafka/kafka_2.12-2.2.0/bin/kafka-topics.sh --create --zookeeper localhost:2181 --topic twitter --replication-factor 1 -partitions 3
 
-4.-Run KafkaTweetsProducer.py (Start Producer)
+cd into src folder:  
+4.-Run kafka_twitterstream_producer.py (Start Producer)
 
-/home/prth3635/spark/spark-2.4.1-bin-hadoop2.7/bin/spark-submit kafka_push_listener.py
+/home/prth3635/spark/spark-2.4.1-bin-hadoop2.7/bin/spark-submit kafka_twitterstream_producer.py
 
-5.-Run KafkaTweetsConsumerSpark.py (Start Consumer)
+5.-Run kafka_twitterstream_consumer_spark.py (Start Consumer)
 
-/home/prth3635/spark/spark-2.4.1-bin-hadoop2.7/bin/spark-submit --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.4.1 kafka_twitter_spark_streaming.py
+/home/prth3635/spark/spark-2.4.1-bin-hadoop2.7/bin/spark-submit --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.4.1 kafka_twitterstream_consumer_spark.py
 
 ## optional
 starting a console producer - /home/prth3635/kafka/kafka_2.12-2.2.0/bin/kafka-console-producer.sh --broker-list localhost:9092 --topic video-stream-event
