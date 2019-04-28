@@ -7,6 +7,9 @@ from WatchDogs_MongoWrapper import MongoWrapper
 import requests
 import json
 import pandas as pd
+from geopy.geocoders import Nominatim
+# from urllib2 import urlopen
+# import json
 
 app = dash.Dash(__name__)
 
@@ -71,19 +74,58 @@ app.layout = html.Div([
               [Input('my_dropdown', 'value')],
               events=[Event('interval-update', 'interval')])
 
-
-def api():
-    response = requests.get("http://104.154.230.56/api/get_polarity_tweets_of_stock/Facebook")
-    print(response.text) 
-
 def update_graph_live(value):
 
     mongo = MongoWrapper()
 
     getTweets =  mongo.get_tweets_with_lat_long(value)
+    # logs = mongo.get_logger(__name__)
+    # logs.info('test log from ian')
     allLatitude = getTweets['Latitude']
     allLongitude = getTweets['Longitude']
+    allText = getTweets['Tweet_Text']
+    # allTweets = getTweets['Location']
+
+    latty = allLatitude.tolist()
+    longy = allLongitude.tolist()
+
     allSentiment = getTweets['Sentiment_Value']
+
+
+
+
+
+
+    # geolocator = Nominatim(user_agent="map")
+
+    # df = pd.DataFrame()
+
+    # stringLatty = str(latty)
+
+
+    # loc =[]
+    # for i,j in zip(latty,longy):
+
+        # location = geolocator.reverse(str(i)+','+str(j))
+        # nlocation = list(location)
+        # print(nlocation)
+        # print(type(location))
+        # df['issaLocation'] = location
+
+        # Newlocation = location.tolist()
+        # df['location'] = location
+        # loc.append(location)
+        # print(Newlocation)
+
+    # print(loc)
+    # print(df.location)
+
+
+
+
+
+
+
 
     tots = allSentiment.count()
 
@@ -98,7 +140,7 @@ def update_graph_live(value):
                 'locationmode':'USA-states',
                 'lon' : allLongitude,
                 'lat' : allLatitude,
-                'text' : allSentiment,
+                'text' : allText,
                 'mode':'markers',
                 'marker':{ 
                     'size':8, 

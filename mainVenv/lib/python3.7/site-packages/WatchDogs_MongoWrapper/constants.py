@@ -7,3 +7,4 @@ class Constants():
         self.mongo_db_name = 'TweetDB'
         self.mongo_tweets_collection_name = 'Tweets'
         self.mongo_stocks_collection_name = 'Stocks'
+        self.kibanalogger = '35.236.16.13'
