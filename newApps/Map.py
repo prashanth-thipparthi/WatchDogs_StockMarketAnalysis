@@ -74,6 +74,11 @@ app.layout = html.Div([
               [Input('my_dropdown', 'value')],
               events=[Event('interval-update', 'interval')])
 
+def api():
+    response = requests.get("http://104.154.230.56/api/get_tweets_with_lat_long/Facebook")
+    data = response.json()
+    print(data['Latitude'])
+
 def update_graph_live(value):
 
     mongo = MongoWrapper()
