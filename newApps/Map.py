@@ -4,6 +4,8 @@ import dash_html_components as html
 import dash_core_components as dcc
 from dash.dependencies import Output, Event, Input
 from WatchDogs_MongoWrapper import MongoWrapper
+import requests
+import json
 import pandas as pd
 
 app = dash.Dash(__name__)
@@ -68,6 +70,11 @@ app.layout = html.Div([
 @app.callback(Output('live-update-graph', 'children'),
               [Input('my_dropdown', 'value')],
               events=[Event('interval-update', 'interval')])
+
+
+def api():
+    response = requests.get("http://104.154.230.56/api/get_polarity_tweets_of_stock/Facebook")
+    print(response.text) 
 
 def update_graph_live(value):
 
