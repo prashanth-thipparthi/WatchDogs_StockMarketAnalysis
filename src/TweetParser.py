@@ -1,5 +1,6 @@
 import json 
-
+from textblob import TextBlob
+import re
 class Tweet():
 
     def __init__(self,in_json):
@@ -12,15 +13,48 @@ class Tweet():
         #self.search_text = in_json.text
         #self.text = in_json.text
         pass   
+    @staticmethod
+    def clean_tweet(tweet):
+        """
+        Clean tweet used in analize_sentiment
+        :param tweet:
+        :return:
+        """
+        return ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", tweet).split())
+    @staticmethod
+    def analize_sentiment(tweet):
+        """
+        Analyzing the sentiment of a tweet
+        :param tweet:
+        :return:
+        """
+        analysis = TextBlob(Tweet.clean_tweet(tweet))
+        return analysis.sentiment.polarity
+
     @staticmethod		
     def parse_from_log_line(in_json):
-        new = {}
-        new["tweet_id"] = in_json["id"]
-        new["dataTime"] = in_json["created_at"]
-        new["geo"] = in_json["geo"]
-        new["coordinates"] = in_json["coordinates"] 
-        new["text"] = in_json["text"] 
-        return new      
+       # print(in_json)
+        print("DATA_TYPE:",type(in_json))
+        if "text" in in_json:
+            sentiment_value = Tweet.analize_sentiment(in_json["text"])
+            if sentiment_value < 0:
+                sentiment_polarity = -1
+            elif sentiment_value == 0:
+                sentiment_polarity = 0
+            else:
+                sentiment_polarity = 1
+            new = {}
+            new["tweet_id"] = in_json["id"]
+            new["DateTimeObject"] = in_json["created_at"]
+            new["Geo"] = in_json["geo"]
+            new["Coordinates"] = in_json["coordinates"] 
+            new["Text"] = in_json["text"]
+            new["Sentiment_Value"] = sentiment_value
+            new["Sentiment_Polarity"] = sentiment_polarity
+            new["Search_Text"] = in_json["search_text"]
+            return new
+        else:
+            pass      
 #        return json.loads(new)
     def __repr__(self):
         return "{} {} {} [{}] \"{} {} {}\" {} {}".format(self.tweet_id, self.dateTime,self.geo, self.coordinates, self.search_text,self.text, self.sentiment_value, self.sentiment_polarity)
