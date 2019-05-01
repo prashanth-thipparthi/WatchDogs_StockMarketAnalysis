@@ -7,6 +7,7 @@ from WatchDogs_MongoWrapper import MongoWrapper
 import requests
 import json
 import pandas as pd
+from pandas.io.json import json_normalize
 from geopy.geocoders import Nominatim
 # from urllib2 import urlopen
 # import json
@@ -74,53 +75,69 @@ app.layout = html.Div([
               [Input('my_dropdown', 'value')],
               events=[Event('interval-update', 'interval')])
 
+<<<<<<< HEAD
 def api(value):
 
     
     data = response.json()
     pretty = pd.DataFrame()
+=======
+# def api(value):
+    # response = requests.get("http://104.154.230.56/api/get_tweets_with_lat_long/{}".format(value))
+    # data = response.json()
+    # pretty = pd.DataFrame()
+>>>>>>> 6c4530b18c408ebb710831cf82d8bbf30de9a38d
 
-    df_sent = pd.DataFrame.from_dict(json_normalize(data['Sentiment_Value']), orient='columns')
-    df_lat = pd.DataFrame.from_dict(json_normalize(data['Latitude']), orient='columns')
-    df_long = pd.DataFrame.from_dict(json_normalize(data['Longitude']), orient='columns')
-    df_tweet = pd.DataFrame.from_dict(json_normalize(data['Tweet_Text']), orient='columns')
+    # df_sent = pd.DataFrame.from_dict(json_normalize(data['Sentiment_Value']), orient='columns')
+    # df_lat = pd.DataFrame.from_dict(json_normalize(data['Latitude']), orient='columns')
+    # df_long = pd.DataFrame.from_dict(json_normalize(data['Longitude']), orient='columns')
+    # df_tweet = pd.DataFrame.from_dict(json_normalize(data['Tweet_Text']), orient='columns')
 
 
-    sent_list = df_sent.iloc[0].tolist()
-    lat_list = df_lat.iloc[0].tolist()
-    long_list = df_lat.iloc[0].tolist()
-    tweet_list = df_lat.iloc[0].tolist()
+    # sent_list = df_sent.iloc[0].tolist()
+    # lat_list = df_lat.iloc[0].tolist()
+    # long_list = df_long.iloc[0].tolist()
+    # tweet_list = df_tweet.iloc[0].tolist()
 
-    pretty['Sentiment'] = sent_list
-    pretty['Latitude'] = lat_list
-    pretty['Longitude'] = long_list
-    pretty['Tweet'] = tweet_list
+    # pretty['Sentiment'] = sent_list
+    # pretty['Latitude'] = lat_list
+    # pretty['Longitude'] = long_list
+    # pretty['Tweet'] = tweet_list
 
+<<<<<<< HEAD
     print(pretty)
+=======
+    # print(pretty)
+>>>>>>> 6c4530b18c408ebb710831cf82d8bbf30de9a38d
 
 def update_graph_live(value):
 
-    mongo = MongoWrapper()
+    # mongo = MongoWrapper()
 
-    getTweets =  mongo.get_tweets_with_lat_long(value)
+    # getTweets =  mongo.get_tweets_with_lat_long(value)
 
 
-    response = requests.get("http://104.154.230.56/api/get_tweets_with_lat_long/{}".format(value))
-    data = response.json()
+    # response = requests.get("http://104.154.230.56/api/get_tweets_with_lat_long/{}".format(value))
+    # data = response.json()
     # print(data['Latitude'])
 
 
     # logs = mongo.get_logger(__name__)
     # logs.info('test log from ian')
-    allLatitude = getTweets['Latitude']
-    allLongitude = getTweets['Longitude']
-    allText = getTweets['Tweet_Text']
+
+
+    # allLatitude = getTweets['Latitude']
+    # allLongitude = getTweets['Longitude']
+    # allText = getTweets['Tweet_Text']
+
+
+
     # allTweets = getTweets['Location']
 
-    latty = allLatitude.tolist()
-    longy = allLongitude.tolist()
+    # latty = allLatitude.tolist()
+    # longy = allLongitude.tolist()
 
-    allSentiment = getTweets['Sentiment_Value']
+    # allSentiment = getTweets['Sentiment_Value']
 
 
 
@@ -161,7 +178,55 @@ def update_graph_live(value):
 
 
 
-    tots = allSentiment.count()
+    # tots = allSentiment.count()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    response = requests.get("http://104.154.230.56/api/get_tweets_with_lat_long/{}".format(value))
+    data = response.json()
+    pretty = pd.DataFrame()
+
+    df_sent = pd.DataFrame.from_dict(json_normalize(data['Sentiment_Value']), orient='columns')
+    df_lat = pd.DataFrame.from_dict(json_normalize(data['Latitude']), orient='columns')
+    df_long = pd.DataFrame.from_dict(json_normalize(data['Longitude']), orient='columns')
+    df_tweet = pd.DataFrame.from_dict(json_normalize(data['Tweet_Text']), orient='columns')
+
+
+    sent_list = df_sent.iloc[0].tolist()
+    lat_list = df_lat.iloc[0].tolist()
+    long_list = df_long.iloc[0].tolist()
+    tweet_list = df_tweet.iloc[0].tolist()
+
+    pretty['Sentiment'] = sent_list
+    pretty['Latitude'] = lat_list
+    pretty['Longitude'] = long_list
+    pretty['Tweet'] = tweet_list
+
+
+
+
+
+
+
+
+
+
+
+
+
+    totalSentiment = pretty['Sentiment']
+    tots2 = totalSentiment.count()
 
     scl = [ [0,"rgb(39,174,96)"],[0.35,"rgb(46,204,113)"],[0.5,"rgb(241,196,15)"],\
     [0.6,"rgb(243,156,18)"],[0.7,"rgb(231,76,60)"],[1,"rgb(192,57,43)"] ]
@@ -172,9 +237,9 @@ def update_graph_live(value):
             'data' :[{
                 'type':'scattergeo',
                 'locationmode':'USA-states',
-                'lon' : allLongitude,
-                'lat' : allLatitude,
-                'text' : allText,
+                'lon' : pretty['Longitude'],
+                'lat' : pretty['Latitude'],
+                'text' : pretty['Tweet'],
                 'mode':'markers',
                 'marker':{ 
                     'size':8, 
@@ -188,7 +253,7 @@ def update_graph_live(value):
                     },
                     'colorscale' : scl,
                     'cmin' : -1,
-                    'color' : allSentiment,
+                    'color' : pretty['Sentiment'],
                     'cmax' : 1,
                     'colorbar':{
                         'title':"Polarity Scale",
@@ -232,7 +297,7 @@ def update_graph_live(value):
                     },
                 }  
         }
-    ), html.Div(children='Total Tweets pulled for searchword: {}.\n'.format(tots)),
+    ), html.Div(children='Total Tweets pulled for searchword: {}.\n'.format(tots2)),
 
     return (bigGraph)
        
