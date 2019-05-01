@@ -2,6 +2,10 @@ import dash
 import dash_html_components as html
 import dash_core_components as dcc
 from WatchDogs_MongoWrapper import MongoWrapper
+import requests
+import json
+import pandas as pd
+from geopy.geocoders import Nominatim
 
 app = dash.Dash(__name__)
 app.layout = html.Div([
@@ -49,11 +53,35 @@ app.layout = html.Div([
     dash.dependencies.Output('output-container', 'children'),
     [dash.dependencies.Input('my-dropdown', 'value')]
     )
+def api(value):
+    
+    response = requests.get(
+         "http://104.154.230.56/api/get_tweets_with_lat_long/{}".format(value))
+    data = response.json()
+    pretty = pd.DataFrame()
+
+    df_sent = pd.DataFrame.from_dict(json_normalize(data['Sentiment_Value']), orient='columns')
+    df_lat = pd.DataFrame.from_dict(json_normalize(data['Latitude']), orient='columns')
+    df_long = pd.DataFrame.from_dict(json_normalize(data['Longitude']), orient='columns')
+    df_tweet = pd.DataFrame.from_dict(json_normalize(data['Tweet_Text']), orient='columns')
+
+    sent_list = df_sent.iloc[0].tolist()
+    lat_list = df_lat.iloc[0].tolist()
+    long_list = df_lat.iloc[0].tolist()
+    tweet_list = df_lat.iloc[0].tolist()
+
+    pretty['Sentiment'] = sent_list
+    pretty['Latitude'] = lat_list
+    pretty['Longitude'] = long_list
+    pretty['Tweet'] = tweet_list
+
+    print(pretty)
 
 def mainFunction(value):
 
     mongo = MongoWrapper()
 
+  
     neg_sentiment, neutral_sentiment, pos_sentiment = mongo.get_polarity_tweets_of_stock(value)
 
     negs = neg_sentiment.count()

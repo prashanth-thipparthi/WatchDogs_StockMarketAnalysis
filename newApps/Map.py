@@ -75,6 +75,8 @@ app.layout = html.Div([
               events=[Event('interval-update', 'interval')])
 
 def api(value):
+
+    
     data = response.json()
     pretty = pd.DataFrame()
 
@@ -94,7 +96,7 @@ def api(value):
     pretty['Longitude'] = long_list
     pretty['Tweet'] = tweet_list
 
-    pretty
+    print(pretty)
 
 def update_graph_live(value):
 
