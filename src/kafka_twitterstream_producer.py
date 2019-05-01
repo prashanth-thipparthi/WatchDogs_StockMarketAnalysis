@@ -6,6 +6,8 @@ from tweepy import Stream
 from tweepy.streaming import StreamListener
 import twitter_credentials
 import threading
+import time
+import dateutil.parser as parser
 
 #TWITTER API CONFIGURATIONS
 consumer_api_key = twitter_credentials.consumer_api_key
@@ -37,11 +39,17 @@ class KafkaTweetsProducer(StreamListener):
         #Producer produces data for consumer
         #Data comes from Twitter
         #print(data)
-        print("DATA TYPE:",self.stock)
+        #print("DATA TYPE:",self.stock)
         js = json.loads(data)
         js["search_text"] = self.stock
+        ts = time.strftime('%Y-%m-%d %H:%M:%S', time.strptime(js["created_at"],'%a %b %d %H:%M:%S +0000 %Y'))
+        date = parser.parse(ts)
+        tsa = ts.split(" ")
+        js["date"] = tsa[0];
+        js["time"] = tsa[1];
+        js["date_time"] = str(date)
         data = json.dumps(js)
-        #print(data)
+        print(data)
         self.producer.produce(bytes(data, "ascii"))
         return True
                                                                                                                                            
@@ -56,6 +64,7 @@ def multiple_producer_thread(auth,topic):
 arr = ["like","football","love","car"]
 threads = []
 i = 0
+'''
 for a in arr:
     thread = threading.Thread(target = multiple_producer_thread, args = (auth,a))
     thread.start()
@@ -63,19 +72,19 @@ for a in arr:
 
 for thread in threads:
     thread.join()
+'''
 
+t1 = threading.Thread(target = multiple_producer_thread, args = (auth,"president"))
+t2 = threading.Thread(target = multiple_producer_thread, args = (auth,"love"))
+t3 = threading.Thread(target = multiple_producer_thread, args = (auth,"football"))
 
-#t1 = threading.Thread(target = multiple_producer_thread, args = (auth,"president"))
-#t2 = threading.Thread(target = multiple_producer_thread, args = (auth,"love"))
-#t3 = threading.Thread(target = multiple_producer_thread, args = (auth,"football"))
+t1.start()
+t2.start()
+t3.start()
 
-#t1.start()
-#t2.start()
-#t3.start()
-
-#t1.join()
-#t2.join()
-#t3.join()
+t1.join()
+t2.join()
+t3.join()
 #Twitter Stream Config
 
 

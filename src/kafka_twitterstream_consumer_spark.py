@@ -43,7 +43,7 @@ def add_to_database(rdd):
 def empty_rdd():
     print("RDD is empty")
     
-sparkSession = SparkSession.builder.appName("KafkaTweetsConsumerSpark").config("spark.mongodb.input.uri", "mongodb://prth:root@34.83.10.248/dbase.user").config("spark.mongodb.output.uri", "mongodb://prth:root@34.83.10.248:27017/dbase.user").getOrCreate()
+sparkSession = SparkSession.builder.appName("KafkaTweetsConsumerSpark").config("spark.mongodb.input.uri", "mongodb://prth:root@104.198.19.115/dbase.tweets").config("spark.mongodb.output.uri", "mongodb://prth:root@104.198.19.115:27017/dbase.tweets").getOrCreate()
 	#Create Spark Context to Connect Spark Cluster
 sc = sparkSession.sparkContext
 
@@ -58,11 +58,14 @@ kafkaTwitterStream = KafkaUtils.createStream(ssc, 'localhost:2181', 'spark-strea
 parsed = kafkaTwitterStream.map(lambda v: json.loads(v[1]))
 
 parsedTweet = parsed.map(Tweet.parse_from_log_line)
+#parsedTweet.pprint()
 sqlContext = SQLContext(sc)
 #parsedTweet.pprint()
 schema_inf = StructType([
         StructField("tweet_id", LongType(), True),
         StructField("DateTimeObject", StringType(), True),
+        StructField("Date", StringType(), True),
+        StructField("Time", StringType(), True),
         StructField("Geo", StringType(), True),
         StructField("Coordinates",StringType(), True),
         StructField("Text",StringType(), True),

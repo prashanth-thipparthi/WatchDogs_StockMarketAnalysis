@@ -33,8 +33,9 @@ class Tweet():
 
     @staticmethod		
     def parse_from_log_line(in_json):
-       # print(in_json)
-        print("DATA_TYPE:",type(in_json))
+        print(in_json)
+    #    print("DATA_TYPE:",in_json)
+        new = {}
         if "text" in in_json:
             sentiment_value = Tweet.analize_sentiment(in_json["text"])
             if sentiment_value < 0:
@@ -43,9 +44,10 @@ class Tweet():
                 sentiment_polarity = 0
             else:
                 sentiment_polarity = 1
-            new = {}
             new["tweet_id"] = in_json["id"]
-            new["DateTimeObject"] = in_json["created_at"]
+            new["DateTimeObject"] = in_json["date_time"]
+            new["Date"] = in_json["date"]
+            new["Time"] = in_json["time"]
             new["Geo"] = in_json["geo"]
             new["Coordinates"] = in_json["coordinates"] 
             new["Text"] = in_json["text"]
@@ -54,12 +56,12 @@ class Tweet():
             new["Search_Text"] = in_json["search_text"]
             return new
         else:
-            pass      
+            return new      
 #        return json.loads(new)
     def __repr__(self):
         return "{} {} {} [{}] \"{} {} {}\" {} {}".format(self.tweet_id, self.dateTime,self.geo, self.coordinates, self.search_text,self.text, self.sentiment_value, self.sentiment_polarity)
 
 
-di = {"id":1,"created_at":123,"geo":123,"coordinates":12,"search_text":"abc","text":"xyz"}
+di = {"id":1,"created_at":123,"geo":123,"coordinates":12,"search_text":"abc","text":"xyz","date_time":"1233","date":"1","time":"3"}
 t = Tweet.parse_from_log_line(di)
 print("val:", t)
