@@ -290,11 +290,11 @@ class MongoWrapper:
                     "Sentiment_Polarity": 1
                 }
         my_query = {"Search_Text": stock_name, "Sentiment_Polarity":-1}
-        tweets_negative = self.tweets_client.find(my_query,field_required).sort({'_id':1}).limit(limit)
+        tweets_negative = self.tweets_client.find(my_query,field_required).sort([('_id',1)]).limit(limit)
         my_query = {"Search_Text": stock_name, "Sentiment_Polarity": 0}
-        tweets_neutral = self.tweets_client.find(my_query,field_required).sort({'_id':1}).limit(limit)
+        tweets_neutral = self.tweets_client.find(my_query,field_required).sort([('_id',1)]).limit(limit)
         my_query = {"Search_Text": stock_name, "Sentiment_Polarity": 1}
-        tweets_positive = self.tweets_client.find(my_query,field_required).sort({'_id':1}).limit(limit)
+        tweets_positive = self.tweets_client.find(my_query,field_required).sort([('_id',1)]).limit(limit)
         if tweets_negative.count() == 0 and tweets_neutral.count() == 0 and tweets_positive.count() == 0:
             raise InputStockError
         else:
