@@ -38,13 +38,14 @@ class MongoWrapperTests(unittest.TestCase):
 
     def test_get_stocks_polarity(self):
         mongo = MongoWrapper()
-        mongo.get_polarity_tweets_of_stock("3D Systems Corporation")
+        print(mongo.get_polarity_tweets_of_stock("3D Systems Corporation"))
     def test_lat_long(self):
         mongo = MongoWrapper()
         print(mongo.get_lat_long('Facebook'))
     def test_get_tweets_with_lat_long(self):
         mongo = MongoWrapper()
-        print(mongo.get_tweets_with_lat_long('Facebook'))
+        test = mongo.get_tweets_with_lat_long('Facebook')
+        print(test)
 
 if __name__ == '__main__':
     unittest.main()

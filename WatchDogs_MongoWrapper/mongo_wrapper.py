@@ -7,7 +7,7 @@ import sys
 import pandas as pd
 import logging
 import logstash
-from multiprocessing import Pool
+import json
 
 '''
 Stocks: A Collection which contains all the Stocks in NYSE.
@@ -130,25 +130,25 @@ class MongoWrapper:
         """
         my_query = {"Search_Text": stock_name, "Coordinates": {"$ne": None}}
         tweets = self.tweets_client.find(my_query)
-        df = pd.DataFrame()
+        root_json_path = []
         for each_tweet in tweets:
             try:
                 lat_long_list = each_tweet['Geo']['coordinates']
                 sentiment_value = each_tweet["Sentiment_Value"]
                 full_text = each_tweet["Text"]
-                data = pd.DataFrame({"Latitude": [lat_long_list[0]], "Longitude": [lat_long_list[1]],
-                                     "Sentiment_Value":[sentiment_value], "Tweet_Text": full_text
+                root_json_path.append(
+                    {"Latitude": lat_long_list[0], "Longitude": lat_long_list[1],
+                                     "Sentiment_Value":sentiment_value, "Tweet_Text": full_text
                                      }
                                     )
-                df= df.append(data)
             except Exception as e:
                 exc_type, exc_obj, exc_tb = sys.exc_info()
                 print('Exception is {excp}, line is {line}, some extra comments: {e_string}'.format(excp=exc_type,
                                                                                                     line=exc_tb.tb_lineno,
                                                                                                     e_string=e))
                 raise
-        df.index = range(1, len(df) + 1)
-        return df
+
+        return json.dumps(root_json_path)
 
 
 
@@ -276,10 +276,15 @@ class MongoWrapper:
         class InputStockError(Exception):
             def __init__(self):
                 print('Either your stock does not exist in the database or it is newly added. Either case check your input')
+        root_json_path = {}
+        root_json_path['Negative_Tweets'] = []
+        root_json_path['Positive_Tweets'] = []
+        root_json_path['Neutral_Tweets'] = []
+
+
         field_required = {
                     "_id" : 0,
                     "Geo": 1,
-                    "Coordinates": 1,
                     "Text": 1,
                     "Sentiment_Polarity": 1
                 }
@@ -292,7 +297,43 @@ class MongoWrapper:
         if tweets_negative.count() == 0 and tweets_neutral.count() == 0 and tweets_positive.count() == 0:
             raise InputStockError
         else:
-            return (tweets_negative, tweets_neutral, tweets_positive)
+            for every_tweet in tweets_negative:
+                try:
+                    lat_long_list = every_tweet['Geo']['coordinates']
+                except:
+                    lat_long_list = ['None', 'None']
+                sentiment_polarity = every_tweet["Sentiment_Polarity"]
+                full_text = every_tweet["Text"]
+                root_json_path['Negative_Tweets'].append(
+                    {"Latitude": lat_long_list[0], "Longitude": lat_long_list[1],
+                     "Sentiment_Polarity": sentiment_polarity, "Tweet_Text": full_text
+                     }
+                )
+            for every_tweet in tweets_neutral:
+                try:
+                    lat_long_list = every_tweet['Geo']['coordinates']
+                except:
+                    lat_long_list = ['None', 'None']
+                sentiment_polarity = every_tweet["Sentiment_Polarity"]
+                full_text = every_tweet["Text"]
+                root_json_path['Neutral_Tweets'].append(
+                    {"Latitude": lat_long_list[0], "Longitude": lat_long_list[1],
+                     "Sentiment_Polarity": sentiment_polarity, "Tweet_Text": full_text
+                     }
+                )
+            for every_tweet in tweets_positive:
+                try:
+                    lat_long_list = every_tweet['Geo']['coordinates']
+                except:
+                    lat_long_list = ['None', 'None']
+                sentiment_polarity = every_tweet["Sentiment_Polarity"]
+                full_text = every_tweet["Text"]
+                root_json_path['Positive_Tweets'].append(
+                    {"Latitude": lat_long_list[0], "Longitude": lat_long_list[1],
+                     "Sentiment_Polarity": sentiment_polarity, "Tweet_Text": full_text
+                     }
+                )
+            return json.dumps(root_json_path)
 
 
     def print_statistics(self, coll_name) -> int:
