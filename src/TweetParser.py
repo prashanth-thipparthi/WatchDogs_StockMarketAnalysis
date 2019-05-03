@@ -1,6 +1,10 @@
 import json 
 from textblob import TextBlob
 import re
+from time import sleep
+from kafka import KafkaProducer
+
+
 class Tweet():
 
     def __init__(self,in_json):
@@ -12,6 +16,7 @@ class Tweet():
         #self.coordinates= in_json.coordinates
         #self.search_text = in_json.text
         #self.text = in_json.text
+
         pass   
     @staticmethod
     def clean_tweet(tweet):
@@ -33,7 +38,7 @@ class Tweet():
 
     @staticmethod		
     def parse_from_log_line(in_json):
-        print(in_json)
+        #print(in_json)
     #    print("DATA_TYPE:",in_json)
         new = {}
         if "text" in in_json:
@@ -48,8 +53,14 @@ class Tweet():
             new["DateTimeObject"] = in_json["date_time"]
             new["Date"] = in_json["date"]
             new["Time"] = in_json["time"]
-            new["Geo"] = in_json["geo"]
-            new["Coordinates"] = in_json["coordinates"] 
+            if in_json["geo"] is not None :
+                new["Geo"] = in_json["geo"]
+            else:
+                new["Geo"] = "null"
+            if in_json["coordinates"] is not None :
+                new["Coordinates"] = in_json["coordinates"]
+            else:
+                new["Coordinates"] = "null"
             new["Text"] = in_json["text"]
             new["Sentiment_Value"] = sentiment_value
             new["Sentiment_Polarity"] = sentiment_polarity

@@ -25,15 +25,11 @@ starting a console consumer - /home/prth3635/kafka/kafka_2.12-2.2.0/bin/kafka-co
 from pyspark import SparkContext
 from pyspark.streaming import StreamingContext
 from pyspark.streaming.kafka import KafkaUtils
-from kafka import SimpleProducer, KafkaClient
-from kafka import KafkaProducer
 import json
 from TweetParser import Tweet 
 from pyspark.sql import SparkSession
 from pyspark.sql import SQLContext 
 from pyspark.sql.types import StringType, StructField, StructType, BooleanType, ArrayType, IntegerType, DateType, LongType, DoubleType
-
-producer = KafkaProducer(bootstrap_servers='34.83.131.116:9092')
 
 def add_to_database(rdd):
     pprint("ENTERED INTO THE DATABASE MODULEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
@@ -42,12 +38,6 @@ def add_to_database(rdd):
     parsedTweetDataFrame.pprint()
     pprint("*****************************************************************************************")
     return parsedTweetDataFrame
-
-def handler(message):
-    records = message.collect()
-    for record in records:
-        producer.send('database', bytes(json.dumps(record),"utf-8"))
-        producer.flush()
 #if __name__ == "__main__":
 
 def empty_rdd():
@@ -68,10 +58,7 @@ kafkaTwitterStream = KafkaUtils.createStream(ssc, 'localhost:2181', 'spark-strea
 parsed = kafkaTwitterStream.map(lambda v: json.loads(v[1]))
 
 parsedTweet = parsed.map(Tweet.parse_from_log_line)
-
-parsedTweet.foreachRDD(handler)
 #parsedTweet.pprint()
-'''
 sqlContext = SQLContext(sc)
 #parsedTweet.pprint()
 schema_inf = StructType([
@@ -87,25 +74,11 @@ schema_inf = StructType([
         StructField("Search_Text",StringType(), True)
     ])
  
-parsedTweet.pprint()
 #parsedTweetDataframe = parsedTweet.map(add_to_database)  
-
-parsedTweet.foreachRDD(lambda rdd : sqlContext.createDataFrame(rdd,schema_inf)
-.selectExpr("CAST(key AS STRING)")
-#, "CAST(value AS STRING)")
-.writeStream
-.format(kafka)
-.option("kafka.bootstrap.servers","34.83.131.116:9092")
-.option("topic","databases")
-.save()
-if rdd.count() != 0 else empty_rdd() )
-
-'''
-#parsedTweet.foreachRDD(lambda rdd : sqlContext.createDataFrame(rdd,schema_inf).write.format("com.mongodb.spark.sql.DefaultSource").mode("append").save() if rdd.count() != 0 else empty_rdd() )
-
+parsedTweet.foreachRDD(lambda rdd : sqlContext.createDataFrame(rdd,schema_inf).write.format("com.mongodb.spark.sql.DefaultSource").mode("append").save() if rdd.count() != 0 else empty_rdd() )
    # parsedTweetDataFrame = sqlContext.createDataFrame(parsedTweet)
    # parsedTweetDataFrame.write.format("com.mongodb.spark.sql.DefaultSource").mode("append").save()
-
+parsedTweet.pprint()
     #Count the number of tweets per User
     #user_counts = parsed.map(lambda tweet: (tweet['user']["screen_name"], 1)).reduceByKey(lambda x,y: x + y)
 

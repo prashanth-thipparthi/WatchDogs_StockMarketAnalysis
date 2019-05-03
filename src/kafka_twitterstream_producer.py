@@ -48,6 +48,15 @@ class KafkaTweetsProducer(StreamListener):
         js["date"] = tsa[0];
         js["time"] = tsa[1];
         js["date_time"] = str(date)
+       
+        '''
+        if "full_text" in js:
+            print("full_text")
+            print("js[full_text]: ",js["full_text"])
+        else:
+           print("text")
+           print("js[text]: ",js["text"])
+        '''           
         data = json.dumps(js)
         print(data)
         self.producer.produce(bytes(data, "ascii"))
