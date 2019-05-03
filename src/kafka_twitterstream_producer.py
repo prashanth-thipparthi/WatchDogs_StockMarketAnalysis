@@ -58,7 +58,7 @@ class KafkaTweetsProducer(StreamListener):
         return True
 
 def multiple_producer_thread(auth,topic):    
-    tweets_stream = Stream(auth, KafkaTweetsProducer(topic))
+    tweets_stream = Stream(auth, KafkaTweetsProducer(topic), tweet_mode='extended')
     tweets_stream.filter(track=[topic])
 
 arr = ["like","football","love","car"]
