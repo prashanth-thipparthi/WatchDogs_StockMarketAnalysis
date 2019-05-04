@@ -5,7 +5,8 @@ from WatchDogs_MongoWrapper import MongoWrapper
 import requests
 import json
 import pandas as pd
-from geopy.geocoders import Nominatim
+from pandas.io.json import json_normalize
+# from geopy.geocoders import Nominatim
 
 app = dash.Dash(__name__)
 app.layout = html.Div([
@@ -53,45 +54,80 @@ app.layout = html.Div([
     dash.dependencies.Output('output-container', 'children'),
     [dash.dependencies.Input('my-dropdown', 'value')]
     )
-def api(value):
     
-    response = requests.get(
-         "http://104.154.230.56/api/get_tweets_with_lat_long/{}".format(value))
-    data = response.json()
-    pretty = pd.DataFrame()
+# def api(value):
+    
+#     response = requests.get("http://104.154.230.56/api/get_polarity_tweets_of_stock/{}".format(value))
+#     data = response.json()
+#     pretty = pd.DataFrame()
 
-    df_sent = pd.DataFrame.from_dict(json_normalize(data['Sentiment_Value']), orient='columns')
-    df_lat = pd.DataFrame.from_dict(json_normalize(data['Latitude']), orient='columns')
-    df_long = pd.DataFrame.from_dict(json_normalize(data['Longitude']), orient='columns')
-    df_tweet = pd.DataFrame.from_dict(json_normalize(data['Tweet_Text']), orient='columns')
+#     df_sent = pd.DataFrame.from_dict(json_normalize(data['neg_tweets']), orient='columns')
+#     df_lat = pd.DataFrame.from_dict(json_normalize(data['neu_tweets']), orient='columns')
+#     df_long = pd.DataFrame.from_dict(json_normalize(data['pos_tweets']), orient='columns')
+#     # df_tweet = pd.DataFrame.from_dict(json_normalize(data['Tweet_Text']), orient='columns')
 
-    sent_list = df_sent.iloc[0].tolist()
-    lat_list = df_lat.iloc[0].tolist()
-    long_list = df_lat.iloc[0].tolist()
-    tweet_list = df_lat.iloc[0].tolist()
+#     pos_list = df_sent.iloc[0].tolist()
+#     neu_list = df_lat.iloc[0].tolist()
+#     neg_list = df_lat.iloc[0].tolist()
 
-    pretty['Sentiment'] = sent_list
-    pretty['Latitude'] = lat_list
-    pretty['Longitude'] = long_list
-    pretty['Tweet'] = tweet_list
-
-    print(pretty)
+#     pretty['Negative'] = pos_list
+#     pretty['Neutral'] = neu_list
+#     pretty['Positive'] = neg_list
+#     # pretty['Tweet'] = tweet_list
 
 def mainFunction(value):
 
-    mongo = MongoWrapper()
-
+    # mongo = MongoWrapper()
   
-    neg_sentiment, neutral_sentiment, pos_sentiment = mongo.get_polarity_tweets_of_stock(value)
+    # neg_sentiment, neutral_sentiment, pos_sentiment = mongo.get_polarity_tweets_of_stock(value)
 
-    negs = neg_sentiment.count()
-    poss = pos_sentiment.count()
-    neuu = neutral_sentiment.count()
-    tots = negs+poss+neuu
+    # negs = neg_sentiment.count()
+    # poss = pos_sentiment.count()
+    # neuu = neutral_sentiment.count()
+    # tots = negs+poss+neuu
 
-    posPercentage = (poss/(tots))*100
-    neuPercentage = (neuu/(tots))*100
-    negPercentage = (negs/(tots))*100
+    # posPercentage = (poss/(tots))*100
+    # neuPercentage = (neuu/(tots))*100
+    # negPercentage = (negs/(tots))*100
+
+
+    response = requests.get("http://104.154.230.56/api/get_polarity_tweets_of_stock/{}".format(value))
+    data = response.json()
+    pretty = pd.DataFrame()
+
+    dataNeg = data['neg_tweets']
+    dataNeu = data['neu_tweets']
+    dataPos = data['pos_tweets']
+
+    df_neg = pd.DataFrame.from_dict(json_normalize(dataNeg['Text\\']), orient='columns')
+    df_neu = pd.DataFrame.from_dict(json_normalize(dataNeu['Text\\']), orient='columns')
+    df_pos = pd.DataFrame.from_dict(json_normalize(dataPos['Text\\']), orient='columns')
+    # df_tweet = pd.DataFrame.from_dict(json_normalize(data['Tweet_Text']), orient='columns')
+
+    pos_list = df_pos.iloc[0].tolist()
+    neu_list = df_neu.iloc[0].tolist()
+    neg_list = df_neg.iloc[0].tolist()
+
+    pretty['Negative'] = pos_list
+    pretty['Neutral'] = neu_list
+    pretty['Positive'] = neg_list
+    # pretty['Tweet'] = tweet_list
+
+    totalNeg = pretty['Negative']
+    totalNeu = pretty['Neutral']
+    totalPos = pretty['Positive']
+
+    sumNeg = totalNeg.count()
+    sumNeu = totalNeu.count()
+    sumPos = totalPos.count()
+
+    tots = sumNeg+sumPos+sumNeu
+    posPercentage = (sumPos/(tots))*100
+    neuPercentage = (sumNeu/(tots))*100
+    negPercentage = (sumNeg/(tots))*100
+
+    print(posPercentage)
+
 
     return dcc.Graph(
         animate=False,

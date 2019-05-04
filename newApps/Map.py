@@ -75,18 +75,18 @@ app.layout = html.Div([
               [Input('my_dropdown', 'value')],
               events=[Event('interval-update', 'interval')])
 
-<<<<<<< HEAD
-def api(value):
+# def api(value):
 
     
-    data = response.json()
-    pretty = pd.DataFrame()
-=======
+#     data = response.json()
+#     pretty = pd.DataFrame()
+
+
+
 # def api(value):
     # response = requests.get("http://104.154.230.56/api/get_tweets_with_lat_long/{}".format(value))
     # data = response.json()
     # pretty = pd.DataFrame()
->>>>>>> 6c4530b18c408ebb710831cf82d8bbf30de9a38d
 
     # df_sent = pd.DataFrame.from_dict(json_normalize(data['Sentiment_Value']), orient='columns')
     # df_lat = pd.DataFrame.from_dict(json_normalize(data['Latitude']), orient='columns')
@@ -104,11 +104,8 @@ def api(value):
     # pretty['Longitude'] = long_list
     # pretty['Tweet'] = tweet_list
 
-<<<<<<< HEAD
-    print(pretty)
-=======
     # print(pretty)
->>>>>>> 6c4530b18c408ebb710831cf82d8bbf30de9a38d
+    # print(pretty)
 
 def update_graph_live(value):
 
