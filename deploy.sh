@@ -9,7 +9,7 @@ docker build -t flask_app .
 docker tag flask_app gcr.io/vaulted-zodiac-236605/flask_api_server
 
 echo "docker build done"
-docker -- push gcr.io/vaulted-zodiac-236605/flask_api_server
+docker push gcr.io/vaulted-zodiac-236605/flask_api_server
 kubectl config view
 kubectl config current-context
 
