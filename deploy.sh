@@ -2,7 +2,7 @@
 echo "running deploy script"
 set -e
 ls -l
-gcloud auth activate-service-account --key-file ./gcloud_project.json.json
+gcloud auth activate-service-account --key-file gcloud_project.json
 echo "Login success in gcloud."
 docker-credential-gcr configure-docker
 docker build -t flask_app .
