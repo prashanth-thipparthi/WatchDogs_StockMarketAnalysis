@@ -1,6 +1,8 @@
 language: python
 notifications:
-  slack: $slack_notification
+  slack:
+     rooms:
+        - secure: $slack_notification
     on_success: always
     on_failure: always
 python:
