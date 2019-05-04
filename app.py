@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route('/api')
 def it_works():
-    return "CI and CD Works!"
+    return "Prashanth Rocks kafka!"
 
 @app.route('/api/get_tweets_with_lat_long/<stock_name>')
 def get_tweets_with_lat_long(stock_name):
