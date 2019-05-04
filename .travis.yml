@@ -1,10 +1,10 @@
 language: python
 notifications:
   slack:
-     - rooms:
-        - secure: $slack_notification
     on_success: always
     on_failure: always
+    rooms:
+      secure: $slack_notification
 python:
 - '3.6'
 cache:
