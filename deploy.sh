@@ -1,9 +1,8 @@
-#!/usr/bin/bash
 #!bin/bash
 echo "running deploy script"
 set -e
 ls -l
-
+gcloud docker -a
 docker build -t flask_app .
 docker tag flask_app gcr.io/vaulted-zodiac-236605/flask_api_server
 
