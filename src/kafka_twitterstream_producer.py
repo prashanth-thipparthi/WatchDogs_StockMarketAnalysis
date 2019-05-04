@@ -8,6 +8,7 @@ import twitter_credentials
 import threading
 import time
 import dateutil.parser as parser
+from WatchDogs_MongoWrapper import MongoWrapper
 
 #TWITTER API CONFIGURATIONS
 consumer_api_key = twitter_credentials.consumer_api_key
@@ -70,22 +71,32 @@ def multiple_producer_thread(auth,topic):
     tweets_stream = Stream(auth, KafkaTweetsProducer(topic), tweet_mode='extended')
     tweets_stream.filter(track=[topic])
 
+
 arr = ["like","football","love","car"]
 threads = []
 i = 0
-'''
-for a in arr:
+
+mng = MongoWrapper()
+stock_companies = []
+for stock in mng.get_all_stocks():
+    stock_companies.append(stock['Company'])
+
+print(stock_companies)    
+
+
+
+for a in stock_companies:
     thread = threading.Thread(target = multiple_producer_thread, args = (auth,a))
     thread.start()
     threads.append(thread)
 
 for thread in threads:
     thread.join()
-'''
 
-t1 = threading.Thread(target = multiple_producer_thread, args = (auth,"president"))
-t2 = threading.Thread(target = multiple_producer_thread, args = (auth,"love"))
-t3 = threading.Thread(target = multiple_producer_thread, args = (auth,"football"))
+'''
+t1 = threading.Thread(target = multiple_producer_thread, args = (auth,"Facebook"))
+t2 = threading.Thread(target = multiple_producer_thread, args = (auth,"apple"))
+t3 = threading.Thread(target = multiple_producer_thread, args = (auth,"Visa"))
 
 t1.start()
 t2.start()
@@ -94,6 +105,7 @@ t3.start()
 t1.join()
 t2.join()
 t3.join()
+'''
 #Twitter Stream Config
 
 
