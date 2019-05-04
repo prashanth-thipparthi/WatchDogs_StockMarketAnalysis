@@ -1,7 +1,7 @@
 language: python
 notifications:
   slack:
-     rooms:
+     - rooms:
         - secure: $slack_notification
     on_success: always
     on_failure: always
