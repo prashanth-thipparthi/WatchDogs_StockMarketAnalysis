@@ -7,6 +7,7 @@ RUN git clone git@github.com:CUBigDataClass/WatchDogs_DatabasePopulator.git
 RUN pip install --upgrade git+ssh://git@github.com/CUBigDataClass/WatchDogs_MongoWrapper.git
 RUN pip install --upgrade git+ssh://git@github.com/CUBigDataClass/RedisWrapper.git
 RUN pip install pykafka
+RUN pip install kafka-python
 WORKDIR /home/WatchDogs_DatabasePopulator
-RUN pip install tweepy
+
 #RUN python populate_db.py
