@@ -33,7 +33,7 @@ from pyspark.sql import SparkSession
 from pyspark.sql import SQLContext 
 from pyspark.sql.types import StringType, StructField, StructType, BooleanType, ArrayType, IntegerType, DateType, LongType, DoubleType
 
-producer = KafkaProducer(bootstrap_servers='34.83.131.116:9092')
+producer = KafkaProducer(bootstrap_servers='localhost:9092')
 
 def add_to_database(rdd):
     pprint("ENTERED INTO THE DATABASE MODULEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
@@ -46,7 +46,7 @@ def add_to_database(rdd):
 def handler(message):
     records = message.collect()
     for record in records:
-        producer.send('database', bytes(json.dumps(record),"utf-8"))
+        producer.send('dbase', bytes(json.dumps(record),"utf-8"))
         producer.flush()
 #if __name__ == "__main__":
 

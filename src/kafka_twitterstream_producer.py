@@ -49,7 +49,16 @@ class KafkaTweetsProducer(StreamListener):
         js["date"] = tsa[0];
         js["time"] = tsa[1];
         js["date_time"] = str(date)
-       
+        if hasattr(js, 'retweeted_status'):
+            try:
+                tweet = js.retweeted_status.extended_tweet["full_text"]
+            except:
+                tweet = js.retweeted_status.text
+        else:
+            try:
+                tweet = js.extended_tweet["full_text"]
+            except AttributeError:
+                tweet = js.text
         '''
         if "full_text" in js:
             print("full_text")
