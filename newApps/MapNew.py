@@ -68,26 +68,31 @@ app.layout = html.Div([
 
 def update_graph_live(value):
 
-    response = requests.get("http://104.154.230.56/api/get_tweets_with_lat_long/{}".format(value))
-    data = response.json()
-    pretty = pd.DataFrame()
+    # response = requests.get("http://104.154.230.56/api/get_tweets_with_lat_long/{}".format(value))
+    # data = response.json()
+    # pretty = pd.DataFrame()
 
-    df_sent = pd.DataFrame.from_dict(json_normalize(data['Sentiment_Value']), orient='columns')
-    df_lat = pd.DataFrame.from_dict(json_normalize(data['Latitude']), orient='columns')
-    df_long = pd.DataFrame.from_dict(json_normalize(data['Longitude']), orient='columns')
-    df_tweet = pd.DataFrame.from_dict(json_normalize(data['Tweet_Text']), orient='columns')
+    # df_sent = pd.DataFrame.from_dict(json_normalize(data['Sentiment_Value']), orient='columns')
+    # df_lat = pd.DataFrame.from_dict(json_normalize(data['Latitude']), orient='columns')
+    # df_long = pd.DataFrame.from_dict(json_normalize(data['Longitude']), orient='columns')
+    # df_tweet = pd.DataFrame.from_dict(json_normalize(data['Tweet_Text']), orient='columns')
 
-    sent_list = df_sent.iloc[0].tolist()
-    lat_list = df_lat.iloc[0].tolist()
-    long_list = df_long.iloc[0].tolist()
-    tweet_list = df_tweet.iloc[0].tolist()
+    # sent_list = df_sent.iloc[0].tolist()
+    # lat_list = df_lat.iloc[0].tolist()
+    # long_list = df_long.iloc[0].tolist()
+    # tweet_list = df_tweet.iloc[0].tolist()
 
-    pretty['Sentiment'] = sent_list
-    pretty['Latitude'] = lat_list
-    pretty['Longitude'] = long_list
-    pretty['Tweet'] = tweet_list
+    # pretty['Sentiment'] = sent_list
+    # pretty['Latitude'] = lat_list
+    # pretty['Longitude'] = long_list
+    # pretty['Tweet'] = tweet_list
+    response_latlong = requests.get("http://104.154.230.56/api/get_tweets_with_lat_long/Facebook")
+    data = response_latlong.json()
+    pretty = json_normalize(data)
 
-    totalSentiment = pretty['Sentiment']
+
+    totalSentiment = pretty['Sentiment_Value'].tolist()
+
     tots2 = totalSentiment.count()
 
     scl = [ [0,"rgb(39,174,96)"],[0.35,"rgb(46,204,113)"],[0.5,"rgb(241,196,15)"],\
