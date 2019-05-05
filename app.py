@@ -47,15 +47,12 @@ def get_tweets_with_lat_long(stock_name):
 
 @app.route('/api/get_polarity_tweets_of_stock/<stock_name>')
 def get_polarity_tweets_of_stock(stock_name):
-    mng = MongoWrapper()
     try:
-        neg, neu, pos = mng.get_polarity_tweets_of_stock(stock_name)
-        neg_tweets = dumps(neg)
-        neu_tweets = dumps(neu)
-        pos_tweets = dumps(pos)
-        data = {"neg_tweets": neg_tweets, "neu_tweets": neu_tweets, "pos_tweets":pos_tweets  }
-        return json.dumps(data)
-    except:
+        mng = MongoWrapper()
+        data_frame = mng.get_polarity_tweets_of_stock(stock_name)
+        return data_frame
+    except Exception as e:
+        print(e)
         abort(404)
 
 
