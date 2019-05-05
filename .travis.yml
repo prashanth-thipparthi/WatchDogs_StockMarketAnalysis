@@ -1,10 +1,8 @@
 language: python
 notifications:
   slack:
-    on_success: always
-    on_failure: always
     rooms:
-      secure: $slack_notification
+	  - bigdataatls:mj6MLfxbgCN60wZUaPEwgrEe#general
 python:
 - '3.6'
 cache:
