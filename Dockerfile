@@ -5,6 +5,8 @@ FROM gcr.io/vaulted-zodiac-236605/watchdogs_dbpopulator_base
 WORKDIR /home
 RUN git clone git@github.com:CUBigDataClass/WatchDogs_DatabasePopulator.git
 RUN pip install --upgrade git+ssh://git@github.com/CUBigDataClass/WatchDogs_MongoWrapper.git
+RUN pip install --upgrade git+ssh://git@github.com/CUBigDataClass/RedisWrapper.git
+RUN pip install pykafka
 WORKDIR /home/WatchDogs_DatabasePopulator
 RUN pip install tweepy
 #RUN python populate_db.py
