@@ -1,6 +1,6 @@
 language: python
 notifications:
-  slack: $slack_notification
+  slack: $(slack_notification)
 python:
 - '3.6'
 cache:
