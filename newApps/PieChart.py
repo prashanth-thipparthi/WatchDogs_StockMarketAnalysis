@@ -91,35 +91,51 @@ def mainFunction(value):
     # negPercentage = (negs/(tots))*100
 
 
-    response = requests.get("http://104.154.230.56/api/get_polarity_tweets_of_stock/{}".format(value))
-    data = response.json()
-    pretty = pd.DataFrame()
+    # response = requests.get("http://104.154.230.56/api/get_polarity_tweets_of_stock/{}".format(value))
+    # data = response.json()
+    # pretty = pd.DataFrame()
 
-    dataNeg = data['neg_tweets']
-    dataNeu = data['neu_tweets']
-    dataPos = data['pos_tweets']
+    # dataNeg = data['neg_tweets']
+    # dataNeu = data['neu_tweets']
+    # dataPos = data['pos_tweets']
 
-    df_neg = pd.DataFrame.from_dict(json_normalize(dataNeg['Text\\']), orient='columns')
-    df_neu = pd.DataFrame.from_dict(json_normalize(dataNeu['Text\\']), orient='columns')
-    df_pos = pd.DataFrame.from_dict(json_normalize(dataPos['Text\\']), orient='columns')
-    # df_tweet = pd.DataFrame.from_dict(json_normalize(data['Tweet_Text']), orient='columns')
+    # df_neg = pd.DataFrame.from_dict(json_normalize(dataNeg['Text\\']), orient='columns')
+    # df_neu = pd.DataFrame.from_dict(json_normalize(dataNeu['Text\\']), orient='columns')
+    # df_pos = pd.DataFrame.from_dict(json_normalize(dataPos['Text\\']), orient='columns')
+    # # df_tweet = pd.DataFrame.from_dict(json_normalize(data['Tweet_Text']), orient='columns')
 
-    pos_list = df_pos.iloc[0].tolist()
-    neu_list = df_neu.iloc[0].tolist()
-    neg_list = df_neg.iloc[0].tolist()
+    # pos_list = df_pos.iloc[0].tolist()
+    # neu_list = df_neu.iloc[0].tolist()
+    # neg_list = df_neg.iloc[0].tolist()
 
-    pretty['Negative'] = pos_list
-    pretty['Neutral'] = neu_list
-    pretty['Positive'] = neg_list
+    # pretty['Negative'] = pos_list
+    # pretty['Neutral'] = neu_list
+    # pretty['Positive'] = neg_list
     # pretty['Tweet'] = tweet_list
+    response_polarity = requests.get(
+        "http://104.154.230.56/api/get_polarity_tweets_of_stock/Facebook")
 
-    totalNeg = pretty['Negative']
-    totalNeu = pretty['Neutral']
-    totalPos = pretty['Positive']
 
-    sumNeg = totalNeg.count()
-    sumNeu = totalNeu.count()
-    sumPos = totalPos.count()
+    data2 = response_polarity.json()
+    neg_tweets = data2['Negative_Tweets']
+    pos_tweets = data2['Positive_Tweets']
+    neutral_tweets = data2['Neutral_Tweets']
+    negative = json_normalize(neg_tweets)
+    positive = json_normalize(pos_tweets)
+    neutral = json_normalize(neutral_tweets)
+
+    sumPos = len(positive)
+    sumNeg = len(negative)
+    sumNeu = len(neutral)
+
+
+    # totalNeg = pretty['Negative']
+    # totalNeu = pretty['Neutral']
+    # totalPos = pretty['Positive']
+
+    # sumNeg = totalNeg.count()
+    # sumNeu = totalNeu.count()
+    # sumPos = totalPos.count()
 
     tots = sumNeg+sumPos+sumNeu
     posPercentage = (sumPos/(tots))*100
