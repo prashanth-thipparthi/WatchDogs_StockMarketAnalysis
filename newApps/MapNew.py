@@ -86,12 +86,15 @@ def update_graph_live(value):
     # pretty['Latitude'] = lat_list
     # pretty['Longitude'] = long_list
     # pretty['Tweet'] = tweet_list
-    response_latlong = requests.get("http://104.154.230.56/api/get_tweets_with_lat_long/Facebook")
+    
+    response_latlong = requests.get("http://104.154.230.56/api/get_tweets_with_lat_long/{}".format(value))
     data = response_latlong.json()
     pretty = json_normalize(data)
 
-
-    totalSentiment = pretty['Sentiment_Value'].tolist()
+    totalSentiment = pretty['Sentiment_Value']
+    totalLongitude = pretty['Longitude']
+    totalLatitude = pretty['Latitude']
+    totalTweet = pretty['Tweet_Text']
 
     tots2 = totalSentiment.count()
 
@@ -104,9 +107,9 @@ def update_graph_live(value):
             'data' :[{
                 'type':'scattergeo',
                 'locationmode':'USA-states',
-                'lon' : pretty['Longitude'],
-                'lat' : pretty['Latitude'],
-                'text' : pretty['Tweet'],
+                'lon' : totalLongitude,
+                'lat' : totalLatitude,
+                'text' : totalTweet,
                 'mode':'markers',
                 'marker':{ 
                     'size':8, 
@@ -120,7 +123,7 @@ def update_graph_live(value):
                     },
                     'colorscale' : scl,
                     'cmin' : -1,
-                    'color' : pretty['Sentiment'],
+                    'color' : totalSentiment,
                     'cmax' : 1,
                     'colorbar':{
                         'title':"Polarity Scale",
