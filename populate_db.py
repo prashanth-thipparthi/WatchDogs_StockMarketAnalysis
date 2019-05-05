@@ -2,6 +2,7 @@ from kafka import KafkaConsumer
 from json import loads
 from WatchDogs_MongoWrapper import MongoWrapper
 from WatchDogs_RedisWrapper import RedisWrapper
+import traceback
 """
 Mongo_Group: The consumer is Mongo
 Redis_Group: The consumer is Redis
@@ -27,11 +28,13 @@ if __name__ == "__main__":
 
         for message in consumer:
             message_value = message.value
+            test_logger = mng.get_logger('Kafka DB Populator')
+            test_logger.info(message_value)
             mng.insert_kafka_tweet_into_db(message_value, message_value['Search_Text'])
             r.redis_insert_tweet(message_value['Search_Text'], message_value)
-    except Exception as e:
+    except:
         test_logger = mng.get_logger('Kafka DB Populator')
-        test_logger.error(str(e))
+        test_logger.error(traceback.format_exc())
 
 
 
