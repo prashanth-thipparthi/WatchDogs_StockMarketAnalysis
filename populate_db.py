@@ -27,8 +27,8 @@ if __name__ == "__main__":
 
         for message in consumer:
             message_value = message.value
-            mng.insert_kafka_tweet_into_db(message, message['Search_Text'])
-            r.redis_insert_tweet(message['Search_Text'], message)
+            mng.insert_kafka_tweet_into_db(message_value, message_value['Search_Text'])
+            r.redis_insert_tweet(message_value['Search_Text'], message_value)
     except Exception as e:
         test_logger = mng.get_logger('Kafka DB Populator')
         test_logger.error(str(e))
