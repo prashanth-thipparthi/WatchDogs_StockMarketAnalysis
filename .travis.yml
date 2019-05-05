@@ -1,8 +1,6 @@
 language: python
 notifications:
-  slack:
-    rooms:
-	  - bigdataatls:mj6MLfxbgCN60wZUaPEwgrEe#general
+  slack: bigdataatls:mj6MLfxbgCN60wZUaPEwgrEe
 python:
 - '3.6'
 cache:
