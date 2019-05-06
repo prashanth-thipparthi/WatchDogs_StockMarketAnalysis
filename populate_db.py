@@ -20,6 +20,9 @@ if __name__ == "__main__":
          group_id='MongoRedis',
          value_deserializer=lambda x: loads(x.decode('utf-8')))
 
+    r.redis_flush_all()
+    test_logger('Redis Cache Flushed')
+
     #### Pull all Companies and update the cache first
     for each_company in mng.get_all_stocks():
         stock_name = each_company['Company']
