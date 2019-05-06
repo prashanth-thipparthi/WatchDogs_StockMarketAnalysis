@@ -16,7 +16,7 @@ app = Flask(__name__)
 
 @app.route('/api')
 def it_works():
-    return "Load Balancing and Kubernetes work"
+    return "CI and CD works"
 
 @app.route('/api/get_tweets_with_lat_long/<stock_name>')
 def get_tweets_with_lat_long(stock_name):
