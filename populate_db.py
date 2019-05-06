@@ -23,11 +23,11 @@ if __name__ == "__main__":
              value_deserializer=lambda x: loads(x.decode('utf-8')))
 
         #### Pull all Companies and update the cache first
-        # for each_company in mng.get_all_stocks():
-        #     stock_name = each_company['Company']
-        #     r.redis_update_json('get_tweets_with_lat_long/', stock_name)
-        #     r.redis_update_json('get_polarity_tweets_of_stock/', stock_name)
-        # test_logger.info('Redis Cache Updated')
+        for each_company in mng.get_all_stocks():
+            stock_name = each_company['Company']
+            r.redis_update_json('get_tweets_with_lat_long/', stock_name)
+            r.redis_update_json('get_polarity_tweets_of_stock/', stock_name)
+        test_logger.info('Redis Cache Updated')
 
         for message in consumer:
             message_value = message.value
