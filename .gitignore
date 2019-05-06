@@ -1,4 +1,3 @@
 .idea/
 .git/
 gcloud_project.json
-constants.py
