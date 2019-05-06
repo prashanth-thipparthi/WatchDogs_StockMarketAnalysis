@@ -2,6 +2,7 @@ from kafka import KafkaConsumer
 from json import loads
 from WatchDogs_MongoWrapper import MongoWrapper
 from WatchDogs_RedisWrapper import RedisWrapper
+from constants import Constants
 
 """
 Mongo_Group: The consumer is Mongo
@@ -9,8 +10,9 @@ Redis_Group: The consumer is Redis
 """
 
 if __name__ == "__main__":
-    r = RedisWrapper()
-    mng = MongoWrapper()
+    Constants = Constants()
+    r = RedisWrapper(Constants.decrypt_key)
+    mng = MongoWrapper(Constants.decrypt_key)
     test_logger = mng.get_logger('Kafka DB Populator')
     consumer = KafkaConsumer(
         'mongoredis',
