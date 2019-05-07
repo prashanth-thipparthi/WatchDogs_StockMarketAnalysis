@@ -14,17 +14,17 @@ app = dash.Dash(__name__)
 
 server = app.server
 
-app.layout = html.Div([
+app.layout = html.Div(style={'background':'#2f3239'}, children=[
     dcc.Dropdown(
         style={
-            'backgroundColor':'transparent', 'borderColor':'rgb(101, 101, 101)'
+            'backgroundColor':'#f8f8f8', 'borderColor':'#2f3239', 'borderRadius':'5px', 'fontFamily':'Roboto', 'height':'35px', 'width':'150px'
         },
         value='Microsoft',
         id='my_dropdown',
         placeholder='Select a stock',
         options=[
             {'label': 'Microsoft', 'value': 'Microsoft'},
-            {'label': 'Facebook', 'value': 'Facebook'},
+            {'label': 'Facebook', 'value': 'Facebook'}, 
             {'label': 'Visa', 'value': 'Visa'},
             {'label': 'Nvidia', 'value': 'Nvidia'},
             {'label': 'Google', 'value': 'Google'},
@@ -54,8 +54,8 @@ app.layout = html.Div([
             {'label': 'Ford', 'value': 'Ford'},
             {'label': 'Samsung', 'value': 'Samsung'},
         ]
-    ),        
-
+    ),
+    
     html.Div(id='output-container', style={'backgroundColor':'transparent'}),
 
 ])
@@ -102,36 +102,43 @@ def update_graph_live(value):
     [0.6,"rgb(243,156,18)"],[0.7,"rgb(231,76,60)"],[1,"rgb(192,57,43)"] ]
 
     return dcc.Graph(
-        style={'height': '800px'},
+        style={'height': '900px'},
         figure={
             'data' :[{
                 'type':'scattergeo',
-                'locationmode':'USA-states',
+                # 'locationmode':'USA-states',
                 'lon' : totalLongitude,
                 'lat' : totalLatitude,
                 'text' : totalTweet,
                 'mode':'markers',
                 'marker':{ 
-                    'size':8, 
-                    # 'opacity':0.8,
+                    'size':10, 
+                    # 'opacity':1,
                     'reversescale':True,
                     'autocolorscale':False,
-                    'symbol':'circle',
+                    'symbol':'circle-open',
                     'line':{
-                        'width':1,
-                        'color':'rgba(102, 102, 102)'
+                        'width':1.5,
+                        'color':'rgba(150, 150, 150)'
                     },
                     'colorscale' : scl,
                     'cmin' : -1,
                     'color' : totalSentiment,
                     'cmax' : 1,
                     'colorbar':{
-                        'title':"Polarity Scale",
+                        'title':{
+                            'text':"Polarity Scale",
+                            'font':{
+                                'size':14,
+                            },
+                        },
                         'thickness':20,
                         'titleside' : "right",
-                        # 'outlinecolor' : "rgba(68, 68, 68, 0)",
                         'ticks' : "outside",
                         'ticklen' : 3,
+                        'tickfont':{
+                            'size':10,
+                        },
                         # 'showticksuffix' : "last",
                         # 'ticksuffix' : " inches",
                         'dtick' : 0.1
@@ -140,34 +147,41 @@ def update_graph_live(value):
             }],
 
                 'layout' :{
-                    'paper_bgcolor':'rgb(201, 201, 201)',
-                    'plot_bgcolor':'rgb(201, 201, 201)',
+                    # 'legend':{
+                    #     'orientation': 'h',
+                    # },
+                    'paper_bgcolor':'#2f3239',
+                    'plot_bgcolor':'#2f3239',
                     'title': "Twitter Sentiment for {}\n".format(value), 
                     'font':{
                         'size':15,
+                        'color': '#f8f8f8',
                     },
                     'geo' :{
                         # 'scope':'usa',
                         # 'projection':dict( 'type'='albers usa' ),
                         'showland' : True,
-                        'landcolor' : "rgb(201, 201, 201)",
-                        'subunitcolor' : "rgb(151, 151, 151)",
-                        'countrycolor' : "rgb(151, 151, 151)",
-                        'countrywidth' : 1.5,
+                        'bgcolor': '#2f3239',       
+                        'landcolor' : "#2f3239",
+                        'subunitcolor' : "#2f3239",
+                        'countrycolor' : "#f8f8f8",
+                        'coastlinewidth': 0.5,
+                        'countrywidth' : 0.5,
                         'subunitwidth' : 1,
                         'showsubunits': True,
                         'showcountries':True,
                         'showcoastlines':True,
-                        'coastlinecolor':"rgb(101, 101, 101)",
+                        'coastlinecolor':"#f8f8f8",
                         'showframe':False,
                         # 'framecolor': "rgb(155, 155, 155)"
                         'showocean':True,
-                        'oceancolor':"rgb(201, 201, 201)"
+                        'oceancolor':"#2f3239"
                         # 'showlakes':True        
                     },
                 }  
         }
-    ), html.Div(children='Total Tweets pulled for searchword: {}.\n'.format(tots2))
+    ), 
+    # html.Div(children='Total Tweets pulled for searchword: {}.\n'.format(tots2))
        
 if __name__ == '__main__':
     app.run_server(debug=True)

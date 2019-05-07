@@ -9,11 +9,14 @@ from pandas.io.json import json_normalize
 # from geopy.geocoders import Nominatim
 
 app = dash.Dash(__name__)
-app.layout = html.Div([
+app.layout = html.Div(style={'background':'#2f3239'}, children=[
     dcc.Dropdown(
+        style={
+            'backgroundColor':'#f8f8f8', 'borderColor':'#2f3239', 'borderRadius':'5px', 'fontFamily':'Roboto', 'height':'35px', 'width':'150px'
+        },
         id='my-dropdown',
         placeholder='Select a stock',
-        # value='Microsoft',
+        value='Microsoft',
         options=[
             {'label': 'Microsoft', 'value': 'Microsoft'},
             {'label': 'Facebook', 'value': 'Facebook'},
@@ -47,7 +50,7 @@ app.layout = html.Div([
             {'label': 'Samsung', 'value': 'Samsung'},
         ]
     ),
-    html.Div(id='output-container')
+    html.Div(id='output-container', style={'backgroundColor':'transparent'})
 ])        
 
 @app.callback(
@@ -113,7 +116,7 @@ def mainFunction(value):
     # pretty['Positive'] = neg_list
     # pretty['Tweet'] = tweet_list
     response_polarity = requests.get(
-        "http://104.154.230.56/api/get_polarity_tweets_of_stock/Facebook")
+        "http://104.154.230.56/api/get_polarity_tweets_of_stock/{}".format(value))
 
 
     data2 = response_polarity.json()
@@ -127,7 +130,7 @@ def mainFunction(value):
     sumPos = len(positive)
     sumNeg = len(negative)
     sumNeu = len(neutral)
-
+    
 
     # totalNeg = pretty['Negative']
     # totalNeu = pretty['Neutral']
@@ -142,7 +145,7 @@ def mainFunction(value):
     neuPercentage = (sumNeu/(tots))*100
     negPercentage = (sumNeg/(tots))*100
 
-    print(posPercentage)
+    # print(posPercentage)
 
 
     return dcc.Graph(
@@ -152,17 +155,37 @@ def mainFunction(value):
                 'type': 'pie',
                 'labels': ['Positive', 'Neutral' ,'Negative'],
                 'values': [posPercentage, neuPercentage, negPercentage],
-                'marker': {'colors': ['#32C85A', '#4C93B1', '#FA4632'],
+                'marker': {
+                    'colors': ['rgb(39,174,96)', 'rgb(242,176,17)', 'rgb(192,57,43)'],
+                    'line':{
+                        'color':'#2f3239',
+                        'width':3,
+                    },
                 # 'values': [posPercentage, negPercentage],
                 # 'marker': {'colors': ['#32C85A', '#FA4632'],
                     },
+                'opacity':0.9,
+                'hole':0.7,
+                # 'pull':0.05,
             }],
 
             'layout':{
-                'title':"Twitter Sentiment for {}\n".format(value)
+                'paper_bgcolor':'#2f3239',
+                'plot_bgcolor':'#2f3239',
+                'title':"Twitter Sentiment for {}\n".format(value),
+                'font':{
+                    'size':15,
+                    'color': '#f8f8f8',
+                },
+                'legend':{
+                    'font':{
+                        'size':12,
+                        'color': '#f8f8f8',
+                    },
+                }
             }
         }
-    ), html.Div('Total Tweets pulled for searchword: {}.\n'.format(tots))
+    )
        
 if __name__ == '__main__':
     app.run_server(debug=True)
