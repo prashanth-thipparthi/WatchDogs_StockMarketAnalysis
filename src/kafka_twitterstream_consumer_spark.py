@@ -46,7 +46,7 @@ def add_to_database(rdd):
 def handler(message):
     records = message.collect()
     for record in records:
-        producer.send('dbase', bytes(json.dumps(record),"utf-8"))
+        producer.send('mongoredis', bytes(json.dumps(record),"utf-8"))
         producer.flush()
 #if __name__ == "__main__":
 

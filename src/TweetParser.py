@@ -40,9 +40,27 @@ class Tweet():
     def parse_from_log_line(in_json):
         #print(in_json)
     #    print("DATA_TYPE:",in_json)
+
+        tweet = ""
+#        in_json = json.loads(in_json) 
         new = {}
         if "text" in in_json:
-            sentiment_value = Tweet.analize_sentiment(in_json["text"])
+            if "retweeted_status" in in_json:
+                try:
+                    tweet = in_json["retweeted_status"]
+                    if "extended_tweet" in tweet:
+                        t =  tweet["extended_tweet"]
+                        if "full_text" in t:
+                            tweet = t["full_text"]
+                    else:
+                        tweet = in_json["text"]
+                except:
+                    tw = js["retweeted_status"]
+                    tweet = tw["text"]
+            else:
+                tweet = in_json["text"]
+            print("tweet: ",tweet)
+            sentiment_value = Tweet.analize_sentiment(tweet)
             if sentiment_value < 0:
                 sentiment_polarity = -1
             elif sentiment_value == 0:
@@ -61,14 +79,17 @@ class Tweet():
                 new["Coordinates"] = in_json["coordinates"]
             else:
                 new["Coordinates"] = "null"
-            new["Text"] = in_json["text"]
+            new["Text"] = tweet
             new["Sentiment_Value"] = sentiment_value
             new["Sentiment_Polarity"] = sentiment_polarity
             new["Search_Text"] = in_json["search_text"]
             return new
         else:
-            return new      
-#        return json.loads(new)
+            return new 
+        '''              
+        new  = "{\"Text\":\"shjdssssssssssssssssssssssssssssssssssssssssshcgdhvbakhbv\",\"Search_Text\":\"Visa\",\"tweet_id\": \"1111111111111111111\",\"DateTimeObject\": \"2019-05-05 05:59:23\",  \"Date\": \"2019-05-05\",\"Time\":\"05:58:57\",\"Geo\": {\"type\": \"Point\",\"coordinates\": [45.52820539,10.218176]},\"Coordinates\": {\"type\": \"Point\",\"coordinates\": [10.218176,45.52820539]},\"Sentiment_Value\": 1,\"Sentiment_Polarity\": 0.34545}"
+        return json.loads(new)
+        '''
     def __repr__(self):
         return "{} {} {} [{}] \"{} {} {}\" {} {}".format(self.tweet_id, self.dateTime,self.geo, self.coordinates, self.search_text,self.text, self.sentiment_value, self.sentiment_polarity)
 
