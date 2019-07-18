@@ -1,6 +1,11 @@
 # WatchDogs_Kafka_Spark
 Kafka and Spark Integration in the Watch Dogs Project
 
+## Software Versions
+Jdk - 11
+Spark - spark-2.4.1-bin-hadoop2.7
+Kafka - kafka_2.12-2.2.0
+
 ## Starting the pipeline
 
 1.Starting a zookeeper server  - /home/prth3635/kafka/kafka_2.12-2.2.0/bin/zookeeper-server-start.sh -daemon /home/prth3635/kafka/kafka_2.12-2.2.0/config/zookeeper.properties
