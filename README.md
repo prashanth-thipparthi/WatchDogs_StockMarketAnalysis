@@ -2,9 +2,9 @@
 Kafka and Spark Integration in the Watch Dogs Project
 
 ## Software Versions
-Jdk - 11
-Spark - spark-2.4.1-bin-hadoop2.7
-Kafka - kafka_2.12-2.2.0
+Jdk - 11  
+Spark - spark-2.4.1-bin-hadoop2.7  
+Kafka - kafka_2.12-2.2.0   
 
 ## Starting the pipeline
 
