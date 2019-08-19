@@ -1,0 +1,37 @@
+language: python
+notifications:
+  slack: bigdataatls:mj6MLfxbgCN60wZUaPEwgrEe
+python:
+- '3.6'
+cache:
+  directories:
+  - "$HOME/google-cloud-sdk"
+env:
+  global:
+  - CLOUDSDK_CORE_DISABLE_PROMPTS=1
+before_install:
+- if [ ! -d "$HOME/google-cloud-sdk/bin" ]; then rm -rf $HOME/google-cloud-sdk; export
+  CLOUDSDK_CORE_DISABLE_PROMPTS=1; curl https://sdk.cloud.google.com | bash; fi
+- source /home/travis/google-cloud-sdk/path.bash.inc
+- gcloud --quiet version
+- gcloud --quiet components update
+- gcloud --quiet components update beta
+- gcloud --quiet components update kubectl
+- gcloud --quiet components install docker-credential-gcr
+- echo $super_secret_password | gpg --passphrase-fd 0 gcloud_project.json.gpg
+
+install:
+- docker
+script:
+- echo "success installing."
+- pwd
+- ls -l
+
+before_deploy:
+- gcloud --quiet components update kubectl
+deploy:
+- provider: script
+  script: bash ./deploy.sh
+  skip_cleanup: true
+  on:
+    branch: master

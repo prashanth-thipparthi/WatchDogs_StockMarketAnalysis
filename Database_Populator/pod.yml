@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+    name: dbpopulator-pod
+    labels:
+       app: dbpopulator
+       env: test
+spec:
+     containers:
+        - name: dbpopulator
+          image: gcr.io/vaulted-zodiac-236605/dbpopulator
+          command: ["python", "/home/WatchDogs_DatabasePopulator/populate_db.py"]
+
