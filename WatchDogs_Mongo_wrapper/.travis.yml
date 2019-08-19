@@ -1,0 +1,15 @@
+language: python
+python:
+  - "3.6"
+
+services: docker
+
+before_install:
+  - echo $super_secret_password | gpg --passphrase-fd 0 gcloud_project.json.gpg
+
+install:
+    - docker login -u _json_key -p "$(cat gcloud_project.json)" https://gcr.io
+
+script:
+  - docker build -t mngwrapper .
+  - docker run -td mngwrapper

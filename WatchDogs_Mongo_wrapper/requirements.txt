@@ -1,0 +1,5 @@
+textblob==0.15.3
+pymongo==3.7.2
+tweepy>=3.7.0
+
+
