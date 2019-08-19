@@ -1,0 +1,5 @@
+.idea/
+.git/
+db.sqlite3
+.directory
+gcloud_project.json
