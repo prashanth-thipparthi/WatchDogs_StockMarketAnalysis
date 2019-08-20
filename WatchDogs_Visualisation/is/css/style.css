@@ -1,0 +1,224 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,400');
+
+.site{
+    display: grid;
+	grid-gap: 2em;
+    grid-template-columns: 0.5fr 3fr 3fr 0.5fr;
+    grid-template-rows: auto auto auto auto;
+    grid-template-areas: 
+		  "menu menu menu menu"
+          ". map map ." 
+		  ". stock pie ."
+		  "foot foot foot foot";     
+}
+
+body{
+	background-color: #2f3239;
+}
+
+/* ================================= 
+  Header
+==================================== */
+
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: 'Helvetica', sans-serif;
+/*	line-height: 1.6;*/
+	margin: 0;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+h2,
+h3,
+a {
+	color: #f8f8f8;
+}
+
+a {
+	text-decoration: none;
+}
+
+.logo {
+	margin: 0;
+	font-size: 1.45em;
+}
+
+.main-nav {
+	margin-top: 5px;
+
+}
+.logo a,
+.main-nav a {
+	padding: 10px 15px;
+	text-transform: uppercase;
+	text-align: center;
+	display: block;
+}
+
+.main-nav a {
+	color: #f8f8f8;
+	font-size: .99em;
+}
+
+.main-nav a:hover {
+	color: rgba(150,150,150,1);
+}
+
+.header,
+.main-nav {
+	display: flex;
+}
+
+.header {
+	grid-area: menu;
+/*	display: flex;*/
+	flex-direction: row;
+/*	flex-direction: row;*/
+	justify-content: space-between;
+/*	align-items: center;*/
+/*
+	    .header{
+			width: 80%;
+			margin: 0 auto;
+			max-width: 1150px;
+	}
+*/
+	padding-top: 1.5em;
+/*	padding-bottom: 1em;*/
+	padding-left: 6em;
+	padding-right: 2em;
+/*	margin-bottom: 1em;*/
+/*	margin-top: 1em;*/
+/*	margin-left: 2em;*/
+/*	margin-right: 1em;*/
+	border-bottom: 1px solid #f8f8f8;
+/*	background-color: #494c54;*/
+/*	box-shadow: 0px 0px 14px 0px rgba(0,0,0,0.75);*/
+/*	border-radius: 5px;*/
+	margin-right: 100px;
+	margin-left: 100px;
+}
+
+/* ================================= 
+  End Header
+==================================== */
+
+.image{
+	grid-area: menu;
+/*	z-index: 1;*/
+	margin-left: 130px;
+	
+}
+
+.TV{
+	grid-area: stock;
+	overflow: hidden;
+/*	padding-top: 47%;*/
+/*	padding-bottom: 70%;*/
+	position: relative;
+	max-height: 100%;
+	max-width: 100%;
+}
+
+.issamap{
+	grid-area: map;
+	overflow: hidden;
+/*	padding-top: 47%;*/
+	padding-bottom: 55%;
+	
+	position: relative;
+	max-height: 100%;
+	max-width: 100%;
+}
+
+.issapie{
+	grid-area: pie;
+	overflow: hidden;
+/*	padding-top: 47%;*/
+/*	padding-bottom: 80%;*/
+	
+	position: relative;
+	max-height: 100%;
+	max-width: 100%;
+}
+
+.centered{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.chartFrame {
+   border: 0;
+   height: 100%;
+   left: 0;
+   position: absolute;
+   top: 0;
+   width: 100%;
+}
+
+.foot{
+	grid-area: foot;
+	color: #f8f8f8;
+	text-align: center;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 100;
+	font-size: 0.5em;
+	padding-bottom: 1em;
+	padding-top: 1em;
+/*	margin-top: 5em;*/
+	border-top: 1px;
+	border-top-style: solid;
+	margin-left: 5%;
+	margin-right: 5%;
+}
+
+@media screen and (max-width: 1700px){
+	.issamap{
+		padding-bottom: 60%;
+	}
+}
+
+@media screen and (max-width: 1600px){
+	.issamap{
+		padding-bottom: 65%;
+	}
+}
+
+@media screen and (max-width: 1500px){
+	.issamap{
+		padding-bottom: 70%;
+	}
+}
+
+@media screen and (max-width: 1400px){
+	.issamap{
+		padding-bottom: 75%;
+	}
+}
+
+@media screen and (max-width: 1300px){
+	.issamap{
+		padding-bottom: 80%;
+	}
+}
+
+@media screen and (max-width: 1200px){
+	.issamap{
+		padding-bottom: 85%;
+	}
+}
+
+
+
+

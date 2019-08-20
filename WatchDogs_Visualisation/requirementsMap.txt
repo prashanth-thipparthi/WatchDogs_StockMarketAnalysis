@@ -1,0 +1,7 @@
+dash==0.30.0
+dash-core-components==0.38.0
+dash-html-components==0.13.2
+dash-renderer==0.15.0
+pandas==0.24.1
+pandas-datareader==0.7.0
+git+https://github.com/CUBigDataClass/WatchDogs_MongoWrapper.git
