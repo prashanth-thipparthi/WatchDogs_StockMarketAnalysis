@@ -9,6 +9,10 @@ WatchDogs_Visualisation : Ian Kresyman   |   Nabil Ettachfini
 ## Introduction:  
 WatchDogs is a web-based analytical tool developed to help visualize the relationship between stock activity and market sentiment using Twitter data.  
 
+## UI Screenshots
+![](images/UI_Screenshot_2.JPEG)
+![](images/UI_Screenshot_1.JPEG)
+![](images/UI_Screenshot_3.JPEG)
 ## Architecture:
 
 ![](images/architecture.PNG)
