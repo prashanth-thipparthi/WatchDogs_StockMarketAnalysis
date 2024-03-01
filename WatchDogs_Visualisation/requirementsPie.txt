@@ -1,6 +1,6 @@
 dash==0.41.0
 dash-core-components==0.46.0
-dash-html-components==0.15.0
+dash-html-components==2.0.0
 dash-renderer==0.22.0
 dash-table==3.6.0
 git+https://github.com/CUBigDataClass/WatchDogs_MongoWrapper.git
